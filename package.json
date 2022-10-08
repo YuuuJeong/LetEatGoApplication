@@ -1,8 +1,8 @@
 {
   "scripts": {
     "server": "cd backend && node server.js",
-    "client": "cd frontend && npm start",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    "client": "cd frontend && npm start && react-native run-android",
+    "start":"concurrently \"npm run server\" \"npm run client\""
   },
   "dependencies": {
     "concurrently": "^7.4.0",
