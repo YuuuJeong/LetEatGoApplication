@@ -63,11 +63,22 @@ const Auth = () => {
 
 const Main = ({ navigation, route }) => {
   return (
-    <Tab.Navigator style={styles.top} initialRouteName="Home">
+    <Tab.Navigator
+      style={styles.top}
+      initialRouteName="Home"
+      tabBarOptions={{
+        labelStyle: {
+          color: "#FFAAB3",
+          fontWeight: "500",
+          fontSize: 11,
+        },
+      }}
+    >
       <Tab.Screen
         name="Home"
         component={Home}
         options={{
+          headerShown: false,
           tabBarIcon: ({ focused }) => {
             return (
               <Image source={require("./android/app/assets/icons/Home.png")} />
@@ -79,6 +90,7 @@ const Main = ({ navigation, route }) => {
         name="Cart"
         component={Cart}
         options={{
+          headerShown: false,
           tabBarIcon: ({ focused }) => {
             return (
               <Image source={require("./android/app/assets/icons/Cart.png")} />
@@ -90,6 +102,7 @@ const Main = ({ navigation, route }) => {
         name="Refrigerator"
         component={Refrigerator}
         options={{
+          headerShown: false,
           tabBarIcon: ({ focused }) => {
             return (
               <Image
@@ -103,6 +116,7 @@ const Main = ({ navigation, route }) => {
         name="MyRecipe"
         component={MyRecipe}
         options={{
+          headerShown: false,
           tabBarIcon: ({ focused }) => {
             return (
               <Image
