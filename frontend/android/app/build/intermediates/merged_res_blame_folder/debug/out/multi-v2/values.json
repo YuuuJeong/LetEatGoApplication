@@ -21,20 +21,39 @@
                     }
                 },
                 {
-                    "source": "/Users/woohyun/LetEatGo_App/android/app/src/main/res/values/strings.xml",
+                    "source": "/Users/woohyun/Desktop/LetEatGo/leteatgo/frontend/android/app/build/generated/res/resValues/debug/values/gradleResValues.xml",
                     "from": {
-                        "startLines": "1",
-                        "startColumns": "4",
-                        "startOffsets": "16",
-                        "endColumns": "49",
-                        "endOffsets": "61"
+                        "startLines": "6,8",
+                        "startColumns": "4,4",
+                        "startOffsets": "156,262",
+                        "endColumns": "63,68",
+                        "endOffsets": "215,326"
                     },
                     "to": {
-                        "startLines": "698",
+                        "startLines": "661,662",
+                        "startColumns": "4,4",
+                        "startOffsets": "41901,41965",
+                        "endColumns": "63,68",
+                        "endOffsets": "41960,42029"
+                    }
+                },
+                {
+                    "source": "/Users/woohyun/Desktop/LetEatGo/leteatgo/frontend/android/app/src/main/res/values/styles.xml",
+                    "from": {
+                        "startLines": "3",
                         "startColumns": "4",
-                        "startOffsets": "44503",
-                        "endColumns": "49",
-                        "endOffsets": "44548"
+                        "startOffsets": "54",
+                        "endLines": "6",
+                        "endColumns": "12",
+                        "endOffsets": "267"
+                    },
+                    "to": {
+                        "startLines": "828",
+                        "startColumns": "4",
+                        "startOffsets": "60030",
+                        "endLines": "831",
+                        "endColumns": "12",
+                        "endOffsets": "60208"
                     }
                 },
                 {
@@ -52,23 +71,6 @@
                         "startOffsets": "40504",
                         "endColumns": "42",
                         "endOffsets": "40542"
-                    }
-                },
-                {
-                    "source": "/Users/woohyun/LetEatGo_App/android/app/build/generated/res/resValues/debug/values/gradleResValues.xml",
-                    "from": {
-                        "startLines": "6,8",
-                        "startColumns": "4,4",
-                        "startOffsets": "156,262",
-                        "endColumns": "63,68",
-                        "endOffsets": "215,326"
-                    },
-                    "to": {
-                        "startLines": "661,662",
-                        "startColumns": "4,4",
-                        "startOffsets": "41901,41965",
-                        "endColumns": "63,68",
-                        "endOffsets": "41960,42029"
                     }
                 },
                 {
@@ -220,25 +222,6 @@
                     }
                 },
                 {
-                    "source": "/Users/woohyun/LetEatGo_App/android/app/src/main/res/values/styles.xml",
-                    "from": {
-                        "startLines": "3",
-                        "startColumns": "4",
-                        "startOffsets": "54",
-                        "endLines": "6",
-                        "endColumns": "12",
-                        "endOffsets": "267"
-                    },
-                    "to": {
-                        "startLines": "828",
-                        "startColumns": "4",
-                        "startOffsets": "60030",
-                        "endLines": "831",
-                        "endColumns": "12",
-                        "endOffsets": "60208"
-                    }
-                },
-                {
                     "source": "/Users/woohyun/.gradle/caches/transforms-3/237960ca1607edccd2d98c15f52b2dce/transformed/jetified-viewpager2-1.0.0/res/values/values.xml",
                     "from": {
                         "startLines": "2",
@@ -365,6 +348,23 @@
                         "startOffsets": "37634,37703",
                         "endColumns": "68,56",
                         "endOffsets": "37698,37755"
+                    }
+                },
+                {
+                    "source": "/Users/woohyun/Desktop/LetEatGo/leteatgo/frontend/android/app/src/main/res/values/strings.xml",
+                    "from": {
+                        "startLines": "1",
+                        "startColumns": "4",
+                        "startOffsets": "16",
+                        "endColumns": "49",
+                        "endOffsets": "61"
+                    },
+                    "to": {
+                        "startLines": "698",
+                        "startColumns": "4",
+                        "startOffsets": "44503",
+                        "endColumns": "49",
+                        "endOffsets": "44548"
                     }
                 },
                 {

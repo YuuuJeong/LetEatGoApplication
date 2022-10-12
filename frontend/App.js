@@ -5,26 +5,23 @@
  * @format
  * @flow strict-local
  */
-import 'react-native-gesture-handler';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import React, {useState} from 'react';
-import Home from './screens/Home';
-import Cart from './screens/Cart';
-import Refrigerator from './screens/Refrigerator';
-import MyRecipe from './screens/MyRecipe';
-import Logout from './screens/SignIn';
-import SignIn from './screens/SignIn';
-import Login from './screens/Login';
-import Register from './screens/Register';
-import Splash from './screens/Splash';
-import Drawer from './screens/Drawer';
+import "react-native-gesture-handler";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React, { useState } from "react";
+import Home from "./screens/MainScreen/Home";
+import Cart from "./screens/MainScreen/Cart";
+import Refrigerator from "./screens/MainScreen/Refrigerator";
+import MyRecipe from "./screens/MainScreen/MyRecipe";
+import Login from "./screens/AuthScreen/Login";
+import Register from "./screens/AuthScreen/Register";
+import Splash from "./screens/AuthScreen/Splash";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-import type {Node} from 'react';
+import type { Node } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -33,7 +30,8 @@ import {
   Text,
   useColorScheme,
   View,
-} from 'react-native';
+  Image,
+} from "react-native";
 
 import {
   Colors,
@@ -41,9 +39,9 @@ import {
   Header,
   LearnMoreLinks,
   ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+} from "react-native/Libraries/NewAppScreen";
 
-import {TextInput} from 'react-native-gesture-handler';
+import { TextInput } from "react-native-gesture-handler";
 
 // Stack Navigator for Login and Register and Logout Screen
 const Auth = () => {
@@ -52,27 +50,89 @@ const Auth = () => {
       <Stack.Screen
         name="Login"
         component={Login}
-        options={{title: '', headerTransparent: true}}
+        options={{ title: "", headerTransparent: true }}
       />
       <Stack.Screen
         name="Register"
         component={Register}
-        options={{title: '', headerTransparent: true}}
+        options={{ title: "", headerTransparent: true }}
       />
     </Stack.Navigator>
   );
 };
 
+const Main = ({ navigation, route }) => {
+  return (
+    <Tab.Navigator
+      style={styles.top}
+      initialRouteName="Home"
+      tabBarOptions={{
+        labelStyle: {
+          color: "#FFAAB3",
+          fontWeight: "500",
+          fontSize: 11,
+        },
+      }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused }) => {
+            return (
+              <Image source={require("./android/app/assets/icons/Home.png")} />
+            );
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Cart"
+        component={Cart}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused }) => {
+            return (
+              <Image source={require("./android/app/assets/icons/Cart.png")} />
+            );
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Refrigerator"
+        component={Refrigerator}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused }) => {
+            return (
+              <Image
+                source={require("./android/app/assets/icons/Refrigerator.png")}
+              />
+            );
+          },
+        }}
+      />
+      <Tab.Screen
+        name="MyRecipe"
+        component={MyRecipe}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused }) => {
+            return (
+              <Image
+                source={require("./android/app/assets/icons/MyRecipe.png")}
+              />
+            );
+          },
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
 const App: () => Node = () => {
   const [login, setLogin] = useState(false);
 
   //Screen과 Navigator의 속성을 포함하는 객체를 반환하는 함수
-
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
 
   return (
     <NavigationContainer>
@@ -80,17 +140,17 @@ const App: () => Node = () => {
         <Stack.Screen
           name="Splash"
           component={Splash}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Auth"
           component={Auth}
-          options={{title: '', headerShown: false}}
+          options={{ title: "", headerShown: false }}
         />
         <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{headerShown: false}}
+          name="Main"
+          component={Main}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
@@ -113,19 +173,22 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   sectionDescription: {
     marginTop: 8,
     fontSize: 18,
-    fontWeight: '400',
+    fontWeight: "400",
   },
   highlight: {
-    fontWeight: '700',
+    fontWeight: "700",
   },
   input: {
-    width: '200px',
-    marginBottom: '25px',
+    width: "200px",
+    marginBottom: "25px",
+  },
+  top: {
+    backgroundColor: "#FFAAB3",
   },
 });
 
