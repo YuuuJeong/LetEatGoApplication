@@ -31,11 +31,11 @@ function Login({ navigation }) {
   // };
   async function postData(id, password) {
     setErrortext("");
-    if (id === "") {
+    if (!id) {
       alert("아이디를 입력해주세요 .");
       return;
     }
-    if (password === "") {
+    if (!password) {
       alert("비밀번호를 입력해주세요 .");
       return;
     }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 
 import {
   widthPercentageToDP as wp,
@@ -24,9 +24,47 @@ import {
 function Register() {
   const [userId, setUserId] = useState("");
   const [userPassword, setUserPassword] = useState("");
+  const [userPasswordCheck, setUserPasswordCheck] = useState("");
   const [nickname, setNickname] = useState("");
   const [sex, setSex] = useState(false);
   const [contact, setContact] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [errortext, setErrortext] = useState("");
+
+  async function handleSubmitButton(
+    userId,
+    userPassword,
+    userPasswordCheck,
+    nickname,
+    sex,
+    contact
+  ) {
+    setErrortext("");
+    if (!userId) {
+      alert("아이디를 입력해주세요 .");
+      return;
+    }
+    if (!userPassword) {
+      alert("비밀번호를 입력해주세요 .");
+      return;
+    }
+    if (!userPasswordCheck) {
+      alert("비밀번호 확인을 입력해주세요 .");
+      return;
+    }
+    if (!nickname) {
+      alert("닉네임을 입력해주세요 .");
+      return;
+    }
+    if (!sex) {
+      alert("성별을 입력해주세요 .");
+      return;
+    }
+    if (!contact) {
+      alert("연락처를 입력해주세요 .");
+      return;
+    }
+  }
 
   return (
     <LinearGradient colors={["#FFCDD2", "#FFAAB3"]} style={styles.container}>
@@ -46,20 +84,33 @@ function Register() {
         <TextInput
           placeholder="아이디(5자 이상, 영문, 숫자 포함)"
           style={styles.formAreaTop}
+          onChangeText={(userId) => setUserId(userId)}
+          autoCapitalize="none"
         />
         <TextInput
           placeholder="비밀번호(8자 이상)"
           secureTextEntry={true}
           style={styles.formAreaMiddle}
+          onChangeText={(userPassword) => setUserPassword(userPassword)}
+          autoCapitalize="none"
         />
         <TextInput
           placeholder="비밀번호 확인"
           secureTextEntry={true}
           style={styles.formAreaBottom}
+          onChangeText={(userPasswordCheck) =>
+            setUserPasswordCheck(userPasswordCheck)
+          }
+          autoCapitalize="none"
         />
       </View>
       <View style={styles.formArea2}>
-        <TextInput placeholder="닉네임" style={styles.formAreaTop} />
+        <TextInput
+          placeholder="닉네임"
+          style={styles.formAreaTop}
+          onChangeText={(nickname) => setNickname(nickname)}
+          autoCapitalize="none"
+        />
         {/* <RNPickerSelect
           style={pickerSelectStyles}
           fixAndroidTouchableBug={true}
@@ -70,12 +121,34 @@ function Register() {
           ]}
         /> */}
 
-        <TextInput placeholder="성별" style={styles.formAreaMiddle} />
-        <TextInput placeholder="연락처" style={styles.formAreaBottom} />
+        <TextInput
+          placeholder="성별"
+          style={styles.formAreaMiddle}
+          onChangeText={(sex) => setSex(sex)}
+          autoCapitalize="none"
+        />
+        <TextInput
+          placeholder="연락처 ex)01012345678"
+          style={styles.formAreaBottom}
+          onChangeText={(contact) => setContact(contact)}
+          autoCapitalize="none"
+        />
       </View>
       <View style={{ flex: 0.2 }}>
         <View style={styles.btnArea}>
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() =>
+              handleSubmitButton(
+                userId,
+                userPassword,
+                userPasswordCheck,
+                nickname,
+                sex,
+                contact
+              )
+            }
+          >
             <Text style={{ color: "white", fontSize: wp(4) }}>회원가입</Text>
           </TouchableOpacity>
         </View>
