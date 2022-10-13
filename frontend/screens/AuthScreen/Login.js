@@ -13,24 +13,53 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { useTheme } from "@react-navigation/native";
 
 function Login({ navigation }) {
+  const [userId, setUserId] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errortext, setErrortext] = useState("");
+
+  // const handleSubmitPress = () => {
+  //   setErrortext("");
+  //   if (userId === "") {
+  //     alert("아이디를 입력해주세요");
+  //     return;
+  //   }
+  //   if (userPassword === "") {
+  //     alert("비밀번호를 입력해주세요");
+  //     return;
+  //   }
+  // };
   async function postData(id, password) {
+    setErrortext("");
+    if (id === "") {
+      alert("아이디를 입력해주세요 .");
+      return;
+    }
+    if (password === "") {
+      alert("비밀번호를 입력해주세요 .");
+      return;
+    }
+    setLoading(true);
+
     try {
       const response = await axios.post("http://10.0.2.2:8088/signin", {
         id,
         password,
       });
 
-      console.log(response.data);
+      // console.log(response.data);
+      if (response.data.msg === "login success") {
+        setLoading(false);
+        navigation.replace("Main");
+      } else {
+        alert("아이디와 비밀번호를 다시 확인해주세요 .");
+        setLoading(false);
+      }
     } catch (e) {
-      console.log("e here");
+      setLoading(false);
       console.log(e);
     }
   }
-
-  const [userId, setUserId] = useState("");
-  const [userPassword, setUserPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [errortext, setErrortext] = useState("");
 
   return (
     <LinearGradient colors={["#FFCDD2", "#FFAAB3"]} style={styles.container}>
