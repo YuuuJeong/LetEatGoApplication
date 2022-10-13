@@ -14,7 +14,7 @@ const Splash = ({ navigation }) => {
     setTimeout(() => {
       setAnimating(false);
       AsyncStorage.getItem("user_id").then((value) =>
-        navigation.replace(value === null ? "Main" : "Auth")
+        navigation.replace(value === null ? "Auth" : "Main")
       );
     }, 3000);
   }, []);
