@@ -31,6 +31,11 @@ function Register() {
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState("");
 
+  const placeholder = {
+    label: "성별을 선택해주세요",
+    value: null,
+  };
+
   async function handleSubmitButton(
     userId,
     userPassword,
@@ -104,6 +109,21 @@ function Register() {
           autoCapitalize="none"
         />
       </View>
+      <View
+        style={{
+          flex: 0.03,
+          justifyContent: "flex-start",
+          // backgroundColor: "blue",
+          marginBottom: wp("2%"),
+        }}
+      >
+        {userPassword !== userPasswordCheck ? (
+          <Text style={styles.textValidation}>
+            비밀번호가 일치하지 않습니다 .
+          </Text>
+        ) : null}
+      </View>
+
       <View style={styles.formArea2}>
         <TextInput
           placeholder="닉네임"
@@ -183,11 +203,11 @@ const styles = StyleSheet.create({
     fontSize: wp(4),
   },
   formArea: {
-    flex: 0.25,
+    flex: 0.24,
     padding: 0,
   },
   formArea2: {
-    flex: 0.25,
+    flex: 0.24,
   },
   formAreaTop: {
     borderWidth: 2,
@@ -228,6 +248,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "black",
     borderRadius: 5,
+  },
+  textValidation: {
+    fontSize: wp("4%"),
+    color: "red",
   },
 });
 
