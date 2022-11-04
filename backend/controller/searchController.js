@@ -11,7 +11,7 @@ const search = async (req, res, next) => {
         for (i of keylist){
             if(i){
             const found = await Food.findAll({
-                attributes: ['Name', 'Image'],
+                attributes: ['Name', 'Image', 'foodid'],
                 where: {
                     Name: {[Op.like]: '%' + i +'%'}
                 }
