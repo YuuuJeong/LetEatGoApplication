@@ -10,9 +10,12 @@ const db = require('./models');
 const { sequelize } = require('./models/index');
 const userRouter = require('./routes/user');
 const checkRouter = require('./routes/check');
+const recipeRouter = require('./routes/recipe');
+const testRouter = require('./routes/test');
+const searchRouter = require('./routes/search');
 const app = express();
 
-app.set('port', process.env.PORT || 8088);
+app.set('port', process.env.PORT || 80);
 
 app.use(morgan("dev"));
 
@@ -41,7 +44,10 @@ app.use(
 );    
 
 app.use('/', userRouter);
+app.use('/', recipeRouter);
 app.use('/check', checkRouter);
+app.use('/test', testRouter);
+app.use('/search', searchRouter);
 
 app.use((err, req, res, next) => {
     console.error(err);

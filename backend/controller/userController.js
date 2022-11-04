@@ -1,5 +1,4 @@
 const User = require('../models/user');
-const { auth, Auth } = require('../models');
 const bcrypt = require('bcrypt');
 const CODE = require('../modules/statusCode');
 
