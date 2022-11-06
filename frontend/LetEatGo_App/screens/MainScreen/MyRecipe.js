@@ -16,6 +16,9 @@ const Height = Dimensions.get('window').height;
 const Width = Dimensions.get('window').width;
 
 function RecipeComponent() {
+  const [like, setLike] = useState(false);
+  const [check, setCheck] = useState(false);
+
   return (
     <View
       style={{
@@ -29,15 +32,23 @@ function RecipeComponent() {
           paddingBottom: Height * 0.04,
         }}>
         <View style={{width: Width * 0.85, flexDirection: 'row-reverse'}}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setCheck(!check)}>
             <Image
-              source={require('../../android/app/assets/icons/Checked2.png')}
+              source={
+                check
+                  ? require('../../android/app/assets/icons/Checked2.png')
+                  : require('../../android/app/assets/icons/Check2.png')
+              }
               style={styles.icon}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setLike(!like)}>
             <Image
-              source={require('../../android/app/assets/icons/Heart2.png')}
+              source={
+                like
+                  ? require('../../android/app/assets/icons/Heart2.png')
+                  : require('../../android/app/assets/icons/EmptyHeart2.png')
+              }
               style={styles.icon}
             />
           </TouchableOpacity>
