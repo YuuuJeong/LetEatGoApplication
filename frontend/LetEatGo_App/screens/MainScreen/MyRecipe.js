@@ -15,8 +15,42 @@ import Topbar from '../Bar/Topbar';
 const Height = Dimensions.get('window').height;
 const Width = Dimensions.get('window').width;
 
+function RecipeComponent() {
+  return (
+    <View
+      style={{
+        ...styles.box,
+        height: Height * 0.2,
+      }}>
+      <View style={{flex: 0.9}}></View>
+      <View
+        style={{
+          flex: 0.1,
+          paddingBottom: Height * 0.04,
+        }}>
+        <View style={{width: Width * 0.85, flexDirection: 'row-reverse'}}>
+          <TouchableOpacity>
+            <Image
+              source={require('../../android/app/assets/icons/Checked2.png')}
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Image
+              source={require('../../android/app/assets/icons/Heart2.png')}
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+}
+
 function MyRecipe({navigation}) {
   const [active, setActive] = useState(true);
+  const [userId, setUserId] = useState('yunmi123');
+  const [nickname, setNickname] = useState('윰블리');
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -26,13 +60,22 @@ function MyRecipe({navigation}) {
           <View style={{...styles.box, flexDirection: 'row'}}>
             <Image
               source={require('../../android/app/assets/icons/User_default.png')}
+              style={{marginLeft: Width * 0.03}}
             />
-            <View>
-              <View style={{flexDirection: 'row'}}>
-                <Text>윰블리</Text>
-                <TouchableOpacity></TouchableOpacity>
+            <View style={{marginLeft: Width * 0.02}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginBottom: Height * 0.015,
+                }}>
+                <Text>{userId}</Text>
+                <TouchableOpacity
+                  style={styles.logoutButton}
+                  onPress={() => navigation.replace('Auth')}>
+                  <Text style={styles.logoutText}>로그아웃</Text>
+                </TouchableOpacity>
               </View>
-              <Text>yunmi@naver.com</Text>
+              <Text>{nickname}</Text>
             </View>
           </View>
         </View>
@@ -48,7 +91,7 @@ function MyRecipe({navigation}) {
                 ...styles.block,
                 backgroundColor: active ? '#F0F0F0' : '#FFCDD2',
               }}
-              onPress={() => setActive(!active)}>
+              onPress={active ? null : () => setActive(!active)}>
               <Text>만들어 본 레시피</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -56,15 +99,17 @@ function MyRecipe({navigation}) {
                 ...styles.block,
                 backgroundColor: active ? '#FFCDD2' : '#F0F0F0',
               }}
-              onPress={() => setActive(!active)}>
+              onPress={active ? () => setActive(!active) : null}>
               <Text>관심 있는 레시피</Text>
             </TouchableOpacity>
           </View>
-          <ScrollView style={{flex: 0.9}}></ScrollView>
+          <ScrollView style={{flex: 0.9}}>
+            <RecipeComponent />
+            <RecipeComponent />
+            <RecipeComponent />
+          </ScrollView>
         </View>
       </View>
-
-      <Button title="로그아웃" onPress={() => navigation.replace('Auth')} />
     </View>
   );
 }
@@ -92,6 +137,7 @@ const styles = StyleSheet.create({
     elevation: 1,
     // justifyContent: '',
     alignItems: 'center',
+    paddingLeft: Width * 0.01,
   },
   block: {
     backgroundColor: '#FFCDD2',
@@ -102,6 +148,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     width: Width * 0.46,
+    elevation: 3,
+  },
+  logoutText: {
+    fontSize: 12,
+    color: '#FFCDD2',
+    marginLeft: Width * 0.01,
+    marginTop: Height * 0.003,
+  },
+  icon: {
+    marginLeft: Width * 0.015,
   },
 });
 

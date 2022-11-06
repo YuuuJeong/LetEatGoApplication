@@ -57,26 +57,7 @@ function Recipe({navigation}) {
             resizeMode="stretch"
           />
         </View>
-        {/* <View style={{flex: 0.15, padding: 5, flexDirection: 'row'}}>
-          <TouchableOpacity style={styles.topButton}>
-            <Text style={styles.topButtonText}>인트로</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.topButton}>
-            <Text style={styles.topButtonText}>1</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.topButton}>
-            <Text style={styles.topButtonText}>2</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.topButton}>
-            <Text style={styles.topButtonText}>3</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.topButton}>
-            <Text style={styles.topButtonText}>4</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.topButton}>
-            <Text style={styles.topButtonText}>5</Text>
-          </TouchableOpacity>
-        </View> */}
+
         <View style={{flex: 0.35, marginTop: Height * 0.005}}>
           <Text style={styles.text}>
             [ASMR MUKBANG] 직접 만든 떡볶이 불닭볶음면 양념 치킨먹방! & 레시피
