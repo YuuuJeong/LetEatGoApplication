@@ -10,6 +10,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React, {useState} from 'react';
+import {RecoilRoot} from 'recoil';
 import Home from './screens/MainScreen/Home';
 import Cart from './screens/MainScreen/Cart';
 import Refrigerator from './screens/MainScreen/Refrigerator';
@@ -177,25 +178,27 @@ const App: () => Node = () => {
   //Screen과 Navigator의 속성을 포함하는 객체를 반환하는 함수
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Splash">
-        <Stack.Screen
-          name="Splash"
-          component={Splash}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Auth"
-          component={Auth}
-          options={{title: '', headerShown: false}}
-        />
-        <Stack.Screen
-          name="Main"
-          component={Main}
-          options={{headerShown: false}}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <RecoilRoot>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Splash">
+          <Stack.Screen
+            name="Splash"
+            component={Splash}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Auth"
+            component={Auth}
+            options={{title: '', headerShown: false}}
+          />
+          <Stack.Screen
+            name="Main"
+            component={Main}
+            options={{headerShown: false}}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </RecoilRoot>
 
     // <NavigationContainer>
     //   <Tab.Navigator>

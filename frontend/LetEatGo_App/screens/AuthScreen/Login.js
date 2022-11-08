@@ -38,6 +38,7 @@ function Login({navigation}) {
 
       // console.log(response.data);
       if (response.data.msg === 'login success') {
+        AsyncStorage.setItem('user_id', userId);
         setLoading(false);
         navigation.replace('Main');
       } else {

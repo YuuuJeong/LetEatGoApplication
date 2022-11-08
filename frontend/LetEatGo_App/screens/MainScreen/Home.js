@@ -1,5 +1,6 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
+import {atom, useRecoilState} from 'recoil';
 import {
   StyleSheet,
   View,
@@ -12,16 +13,19 @@ import {
 } from 'react-native';
 
 import Topbar from '../Bar/Topbar';
+import numState from '../../recoils/numState';
 
 const Height = Dimensions.get('window').height;
 const Width = Dimensions.get('window').width;
 
 function Home({navigation, route}) {
+  const [num, setNum] = useRecoilState(numState);
+
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <Topbar navigation={navigation} />
       <View style={styles.box}>
-        <Text style={styles.top5_text}>Top5 레시피</Text>
+        <Text style={styles.top5_text}>Top5 레시피{num}</Text>
         <ScrollView
           horizontal
           pagingEnabled

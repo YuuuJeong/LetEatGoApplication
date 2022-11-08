@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import Topbar from '../Bar/Topbar';
 
+import AsyncStorage from '@react-native-community/async-storage';
+
 const Height = Dimensions.get('window').height;
 const Width = Dimensions.get('window').width;
 
@@ -82,7 +84,10 @@ function MyRecipe({navigation}) {
                 <Text>{userId}</Text>
                 <TouchableOpacity
                   style={styles.logoutButton}
-                  onPress={() => navigation.replace('Auth')}>
+                  onPress={() => {
+                    AsyncStorage.removeItem('user_id');
+                    navigation.replace('Auth');
+                  }}>
                   <Text style={styles.logoutText}>로그아웃</Text>
                 </TouchableOpacity>
               </View>
