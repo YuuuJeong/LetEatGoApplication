@@ -16,7 +16,7 @@ import Topbar from '../Bar/Topbar';
 const Height = Dimensions.get('window').height;
 const Width = Dimensions.get('window').width;
 
-function Recipe({navigation}) {
+function Recipe({navigation, route}) {
   const [like, setLike] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [made, setMade] = useState(false);
@@ -142,8 +142,20 @@ function Recipe({navigation}) {
             flex: 1,
           }}>
           <View style={{flex: 0.45}}>
-            <Text style={{color: '#FFCDD2'}}>식재료</Text>
-            <View style={{flexDirection: 'row'}}>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text style={{color: '#FFCDD2'}}>식재료</Text>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: '#A4A4A4',
+                  borderRadius: 10,
+                  padding: 3,
+                }}>
+                <Text style={{fontSize: 12, color: 'white'}}>자세히 보기</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={{flexDirection: 'row', marginBottom: Height * 0.01}}>
               <Image
                 source={require('../../android/app/assets/Ingredient/chicken.png')}
                 style={styles.icon}
@@ -165,7 +177,13 @@ function Recipe({navigation}) {
           </View>
           <View style={{flex: 1}}>
             <Text style={{color: '#FFCDD2'}}>조미료</Text>
-            <View style={{flexDirection: 'row'}}>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginBottom: Height * 0.01,
+              }}>
               <Image
                 source={require('../../android/app/assets/Ingredient/sesame_oil.png')}
                 style={styles.icon}
@@ -176,7 +194,18 @@ function Recipe({navigation}) {
               />
             </View>
           </View>
-          <View style={{flex: 0.1, marginBottom: Height * 0.05}}>
+
+          <Text>
+            느타리버섯 150g, 다진 고기 50g 꽃소금 1큰술, 참기름 1작은술,
+            부침가루 2큰술, 달걀 2개, 식용유 3큰술
+          </Text>
+
+          <View
+            style={{
+              flex: 0.1,
+              marginBottom: Height * 0.05,
+              marginTop: Height * 0.02,
+            }}>
             <Text style={{color: '#FFCDD2'}}>레시피</Text>
             <View
               style={{

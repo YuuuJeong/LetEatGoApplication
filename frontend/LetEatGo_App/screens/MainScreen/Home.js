@@ -1,5 +1,5 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import React from 'react';
+import React, {useState} from 'react';
 import {atom, useRecoilState} from 'recoil';
 import {
   StyleSheet,
@@ -20,6 +20,7 @@ const Width = Dimensions.get('window').width;
 
 function Home({navigation, route}) {
   const [num, setNum] = useRecoilState(numState);
+  const [foodId, setFoodId] = useState(0);
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -30,7 +31,8 @@ function Home({navigation, route}) {
           horizontal
           pagingEnabled
           showsHorizontalScrollIndicator={false}>
-          <TouchableOpacity onPress={() => navigation.navigate('Recipe')}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Recipe', {food_id: 777})}>
             <Image
               style={styles.image}
               source={require('../../android/app/assets/imgs/food1.jpeg')}
