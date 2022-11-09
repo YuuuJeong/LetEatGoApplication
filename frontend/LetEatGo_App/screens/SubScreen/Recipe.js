@@ -1,5 +1,6 @@
 import {useScrollToTop} from '@react-navigation/native';
-import React, {useState} from 'react';
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -22,6 +23,25 @@ function Recipe({navigation, route}) {
   const [made, setMade] = useState(false);
   const [madeCount, setMadeCount] = useState(0);
   const [view, setView] = useState(174334);
+  const [detail, setDetail] = useState('');
+
+  // useEffect(()=>{
+  //   const getData = async ()=>{
+
+  //   }
+  // },[])
+
+  async function getData(food_id) {
+    try {
+      const response = await axios.get(
+        `http://10.0.2.2:80/recipe?foodid=${food_id}`,
+      );
+      console.log(response.data.recipe.detail);
+      setDetail(response.data.recipe.detail);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   const link =
     'https://www.youtube.com/watch?v=oEWZ4DOgVK4&ab_channel=GONGSAMTABLE%EC%9D%B4%EA%B3%B5%EC%82%BC';
@@ -151,7 +171,14 @@ function Recipe({navigation, route}) {
                   borderRadius: 10,
                   padding: 3,
                 }}>
-                <Text style={{fontSize: 12, color: 'white'}}>자세히 보기</Text>
+                <Text
+                  style={{fontSize: 12, color: 'white'}}
+                  onPress={() => {
+                    console.log(typeof route.params.food_id);
+                    getData(route.params.food_id);
+                  }}>
+                  자세히 보기
+                </Text>
               </TouchableOpacity>
             </View>
 
@@ -195,10 +222,7 @@ function Recipe({navigation, route}) {
             </View>
           </View>
 
-          <Text>
-            느타리버섯 150g, 다진 고기 50g 꽃소금 1큰술, 참기름 1작은술,
-            부침가루 2큰술, 달걀 2개, 식용유 3큰술
-          </Text>
+          <Text>{detail}</Text>
 
           <View
             style={{
