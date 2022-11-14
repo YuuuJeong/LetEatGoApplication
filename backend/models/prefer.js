@@ -4,8 +4,8 @@ module.exports = class Prefer extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-        id: {
-          type: Sequelize.STRING(50),
+        userid: {
+          type: Sequelize.INTEGER,
           allowNull: false,
           primaryKey: true,
         },
@@ -15,10 +15,10 @@ module.exports = class Prefer extends Sequelize.Model {
           primaryKey: true,
         },
         survey: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.SMALLINT,
           allowNull: true,
         },
-        like: {
+        favorite: {
           type: Sequelize.BOOLEAN,
           allowNull: true,
         },
@@ -27,9 +27,9 @@ module.exports = class Prefer extends Sequelize.Model {
           allowNull: true,
         },
         view: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.SMALLINT,
           allowNull: true,
-        },
+        }
       },
       {
         sequelize,
@@ -42,11 +42,5 @@ module.exports = class Prefer extends Sequelize.Model {
         collate: "utf8_general_ci",
       }
     );
-  }
-  static associate(db) {
-    db.Prefer.belongsToMany(db.Food, {
-      foreignKey: "foodid",
-      sourceKey: "foodid",
-    });
   }
 };

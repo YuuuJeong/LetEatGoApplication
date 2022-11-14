@@ -1,31 +1,67 @@
 const Food = require("../models/food");
-const Prefer = require("../models/Prefer");
+const Prefer = require("../models/prefer");
 const CODE = require("../modules/statusCode");
+const Sequelize = require("sequelize");
 
 const survey = {
   taste: async (req, res, next) => {
     try {
-      Food.findAll({ order: "random()", limit: 60 }).then((result) => {
-        return res.json({
-          postList: result,
-        });
-      });
-    } catch (error) {}
+      const prefer = await Food.findAll({ order: [Sequelize.fn('RAND')], limit: 60, attributes:['foodid', 'Name', 'Image']});
+      console.log(prefer.length);
+      return res.json({statusCode: CODE.SUCCESS, msg:"60개 음식을 뿌렸습니다.", food: prefer});
+    } catch (error) {
+      return res.json({statusCode: CODE.FAIL, msg:"fail"})
+    }
   },
   save: async (req, res, next) => {
     try {
-      await Prefer.create({
-        //id: ?, 사용자 id 받아오기
-        foodid: req.body.id,
-        score: req.body.score,
-      });
+      const arr = req.body.prefer;
+      const likearr = arr.like;
+      const dislike = arr.dislike;
+      for(item of likearr){
+          const isPrefer = await Prefer.update({  
+            survey: 1
+            }, {
+              where:{
+              userid: req.body.userid,
+              foodid: item
+            }}
+          ); // 있는지 확인하고 업데이트 없으면 0반환
+          if(!isPrefer){ //있는 경우
+            const likeResult = await Prefer.create({
+              foodid: item,
+              userid: req.body.userid,
+              survey: 1
+            });
+          }
+      }
+      for(item of dislike){
+        const isPrefer = await Prefer.update({  
+          survey: -1
+          }, {
+            where:{
+            userid: req.body.userid,
+            foodid: item
+          }}
+        ); // 있는지 확인하고 업데이트 없으면 0반환
+        if(!isPrefer){ //있는 경우
+          const likeResult = await Prefer.create({
+            foodid: item,
+            userid: req.body.userid,
+            survey: 1
+          });
+        }
+      }
       return res.json({
         statusCode: CODE.SUCCESS,
         msg: "create user successfully",
       });
     } catch (err) {
       console.error(err);
-      next(err);
+      return res.json({
+        statusCode: CODE.FAIL,
+        msg: "database error"
+      });
     }
   },
 };
