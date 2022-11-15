@@ -9,6 +9,7 @@ import {
   Dimensions,
   ScrollView,
   Button,
+  Alert,
 } from 'react-native';
 import Topbar from '../Bar/Topbar';
 
@@ -85,8 +86,18 @@ function MyRecipe({navigation}) {
                 <TouchableOpacity
                   style={styles.logoutButton}
                   onPress={() => {
-                    AsyncStorage.removeItem('user_id');
-                    navigation.replace('Auth');
+                    Alert.alert('로그아웃 하시겠습니까?', '', [
+                      {
+                        text: '네',
+                        onPress: () => {
+                          AsyncStorage.removeItem('user_id');
+                          navigation.replace('Auth');
+                        },
+                      },
+                      {
+                        text: '아니오',
+                      },
+                    ]);
                   }}>
                   <Text style={styles.logoutText}>로그아웃</Text>
                 </TouchableOpacity>
@@ -105,7 +116,7 @@ function MyRecipe({navigation}) {
             <TouchableOpacity
               style={{
                 ...styles.block,
-                backgroundColor: active ? '#F0F0F0' : '#FFCDD2',
+                backgroundColor: active ? '#FFCDD2' : '#F0F0F0',
               }}
               onPress={active ? null : () => setActive(!active)}>
               <Text>만들어 본 레시피</Text>
@@ -113,7 +124,7 @@ function MyRecipe({navigation}) {
             <TouchableOpacity
               style={{
                 ...styles.block,
-                backgroundColor: active ? '#FFCDD2' : '#F0F0F0',
+                backgroundColor: active ? '#F0F0F0' : '#FFCDD2',
               }}
               onPress={active ? () => setActive(!active) : null}>
               <Text>관심 있는 레시피</Text>
