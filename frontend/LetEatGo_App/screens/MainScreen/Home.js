@@ -39,7 +39,8 @@ function Home({navigation, route}) {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate('Recipe')}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Recipe', {food_id: 888})}>
             <Image
               style={styles.image}
               source={require('../../android/app/assets/imgs/food2.jpeg')}

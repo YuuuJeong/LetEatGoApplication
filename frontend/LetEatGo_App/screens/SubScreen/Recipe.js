@@ -23,21 +23,20 @@ function Recipe({navigation, route}) {
   const [made, setMade] = useState(false);
   const [madeCount, setMadeCount] = useState(0);
   const [view, setView] = useState(174334);
+  const [orders, setOrders] = useState([]);
   const [detail, setDetail] = useState('');
-
-  // useEffect(()=>{
-  //   const getData = async ()=>{
-
-  //   }
-  // },[])
+  const [showDetail, setShowDetail] = useState(false);
 
   async function getData(food_id) {
     try {
       const response = await axios.get(
         `http://10.0.2.2:80/recipe?foodid=${food_id}`,
       );
-      console.log(response.data.recipe.detail);
+      console.log(response.data.recipe);
+      console.log('\n');
+      console.log(response.data.recipe.general.order);
       setDetail(response.data.recipe.detail);
+      setOrders(response.data.recipe.general.order);
     } catch (e) {
       console.log(e);
     }
@@ -65,6 +64,10 @@ function Recipe({navigation, route}) {
       alert(error.message);
     }
   };
+
+  useEffect(() => {
+    getData(route.params.food_id);
+  }, []);
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -170,15 +173,13 @@ function Recipe({navigation, route}) {
                   backgroundColor: '#A4A4A4',
                   borderRadius: 10,
                   padding: 3,
+                }}
+                onPress={() => {
+                  // console.log(typeof route.params.food_id);
+                  // getData(route.params.food_id);
+                  showDetail ? setShowDetail(false) : setShowDetail(true);
                 }}>
-                <Text
-                  style={{fontSize: 12, color: 'white'}}
-                  onPress={() => {
-                    console.log(typeof route.params.food_id);
-                    getData(route.params.food_id);
-                  }}>
-                  자세히 보기
-                </Text>
+                <Text style={{fontSize: 12, color: 'white'}}>자세히 보기</Text>
               </TouchableOpacity>
             </View>
 
@@ -222,7 +223,7 @@ function Recipe({navigation, route}) {
             </View>
           </View>
 
-          <Text>{detail}</Text>
+          <Text>{showDetail ? detail : null}</Text>
 
           <View
             style={{
@@ -240,7 +241,7 @@ function Recipe({navigation, route}) {
                 style={styles.texticon}
               />
               <Text style={{marginTop: Width * 0.04, flexShrink: 1}}>
-                양파는 채썰고 슬라이스햄은 먹기 좋은 크기로 썰어줍니다.
+                {orders.Order1}
               </Text>
             </View>
 
@@ -250,9 +251,7 @@ function Recipe({navigation, route}) {
                 style={styles.texticon}
               />
               <Text style={{marginTop: Width * 0.04, flexShrink: 1}}>
-                끓는 물에 면을 먼저 데쳐줍니다. 이때 면은 완전히 삶는 것이 아닌
-                면이 살짝 풀어질 정도로만 데리고, 데친 면은 찬물에 담가 면이
-                불지 않도록 식혀주세요.
+                {orders.Order2}
               </Text>
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -261,8 +260,7 @@ function Recipe({navigation, route}) {
                 style={styles.texticon}
               />
               <Text style={{marginTop: Width * 0.04, flexShrink: 1}}>
-                달궈진 팬에 오일을 두르고 슬라이스햄과 다진마늘, 채썬 양파를
-                약불에서 5분간 볶아주세요.
+                {orders.Order3}
               </Text>
             </View>
           </View>
