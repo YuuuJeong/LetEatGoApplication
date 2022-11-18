@@ -1,6 +1,6 @@
 import {useScrollToTop} from '@react-navigation/native';
 import axios from 'axios';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -11,13 +11,16 @@ import {
   Share,
 } from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
-
+import YoutubePlayer from 'react-native-youtube-iframe';
+import WebView from 'react-native-webview';
+import IngredientComponent from './IngredientComponent';
 import Topbar from '../Bar/Topbar';
 
 const Height = Dimensions.get('window').height;
 const Width = Dimensions.get('window').width;
 
 function Recipe({navigation, route}) {
+  const [error, setError] = useState('');
   const [like, setLike] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [made, setMade] = useState(false);
@@ -26,17 +29,74 @@ function Recipe({navigation, route}) {
   const [orders, setOrders] = useState([]);
   const [detail, setDetail] = useState('');
   const [showDetail, setShowDetail] = useState(false);
+  const [playing, setPlaying] = useState(true);
+  const [foodName, setFoodName] = useState('제육볶음');
+  const [videoName, setVideoName] = useState('');
+  const [videoId, setVideoId] = useState('');
+
+  // const [params, setParams] = useState({
+  //   key: 'AIzaSyC5Ss_A2H0Z9kWdY21AcQawsWCJRvFPA3k',
+  //   q: '제육볶음',
+  //   type: 'video',
+  //   maxResults: 3,
+  //   part: 'snippet',
+  // });
+
+  // axios.defaults.baseURL = 'https://www.googleapis.com/youtube/v3/search';
+
+  // const findLink = useCallback(() => {
+  //   axios
+  //     .get('https://www.googleapis.com/youtube/v3/search', {params})
+  //     .then(response => {
+  //       console.log(response.data);
+  //       // setVideoName(response.data.items[0].snippet.title);
+  //       // setVideoId(response.data.items[0].id.videoId);
+  //       if (!response) {
+  //         setError('검색된 영상이 없습니다');
+  //         return;
+  //       }
+  //       // console.log(response.data.item)
+  //     })
+  //     .catch(err => {
+  //       console.log('Hi');
+  //       console.log(err);
+  //     });
+  // }, [params]);
+
+  // async function findLink() {
+  //   params = {
+  //     key: 'AIzaSyC5Ss_A2H0Z9kWdY21AcQawsWCJRvFPA3k',
+  //     q: '제육볶음',
+  //     type: 'video',
+  //     maxResults: 3,
+  //     part: 'snippet',
+  //   };
+  //   try {
+  //     const response2 = await axios.get(
+  //       'https://www.googleapis.com/youtube/v3/search',
+  //       {params},
+  //     );
+  //     console.log(response2);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
 
   async function getData(food_id) {
     try {
       const response = await axios.get(
         `http://10.0.2.2:80/recipe?foodid=${food_id}`,
       );
+      console.log(response);
+      console.log('\n');
       console.log(response.data.recipe);
       console.log('\n');
-      console.log(response.data.recipe.general.order);
+      console.log(response.data.recipe.general.foodname);
       setDetail(response.data.recipe.detail);
       setOrders(response.data.recipe.general.order);
+      setFoodName(response.data.recipe.general.foodname);
+      console.log(foodName);
+      // findLink();
     } catch (e) {
       console.log(e);
     }
@@ -67,24 +127,25 @@ function Recipe({navigation, route}) {
 
   useEffect(() => {
     getData(route.params.food_id);
+    // setParams({...params, q: `${foodName}`});
   }, []);
-
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <Topbar navigation={navigation} />
       <View style={{flex: 0.55, padding: 5}}>
         <View style={{flex: 0.65}}>
-          <Image
-            source={require('../../android/app/assets/imgs/recipeImage.jpeg')}
+          {/* <Image
+            source={{
+              url: {url},
+            }}
             style={{width: '100%', height: '100%'}}
             resizeMode="stretch"
-          />
+          /> */}
+          <YoutubePlayer height={300} play={playing} videoId={videoId} />
         </View>
 
         <View style={{flex: 0.35, marginTop: Height * 0.005}}>
-          <Text style={styles.text}>
-            [ASMR MUKBANG] 직접 만든 떡볶이 불닭볶음면 양념 치킨먹방! & 레시피
-          </Text>
+          <Text style={styles.text}>{videoName}</Text>
           <View
             style={{
               flexDirection: 'row',
@@ -201,6 +262,7 @@ function Recipe({navigation, route}) {
                 source={require('../../android/app/assets/Ingredient/ramen.png')}
                 style={styles.icon}
               />
+              <IngredientComponent />
             </View>
           </View>
           <View style={{flex: 1}}>
