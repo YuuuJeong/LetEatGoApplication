@@ -33,6 +33,7 @@ function Recipe({navigation, route}) {
   const [foodName, setFoodName] = useState('제육볶음');
   const [videoName, setVideoName] = useState('');
   const [videoId, setVideoId] = useState('');
+  const [materials1, setMaterials1] = useState([]);
 
   // const [params, setParams] = useState({
   //   key: 'AIzaSyC5Ss_A2H0Z9kWdY21AcQawsWCJRvFPA3k',
@@ -87,14 +88,18 @@ function Recipe({navigation, route}) {
       const response = await axios.get(
         `http://10.0.2.2:80/recipe?foodid=${food_id}`,
       );
-      console.log(response);
-      console.log('\n');
-      console.log(response.data.recipe);
-      console.log('\n');
-      console.log(response.data.recipe.general.foodname);
+      // console.log(response);
+      // console.log('\n');
+      // console.log(response.data.recipe);
+      // console.log('\n');
+      console.log(response.data.recipe.general);
       setDetail(response.data.recipe.detail);
       setOrders(response.data.recipe.general.order);
       setFoodName(response.data.recipe.general.foodname);
+      setMaterials1(Object.values(response.data.recipe.general.material));
+
+      // console.log(response.data.recipe.general.material);
+      console.log(materials1);
       console.log(foodName);
       // findLink();
     } catch (e) {
@@ -125,9 +130,21 @@ function Recipe({navigation, route}) {
     }
   };
 
+  // const matList = () => {
+  //   console.log('hi');
+  //   const materialList = materials1.map(material => (
+  //     <IngredientComponent food_name={material} />
+  //   ));
+
+  //   return materialList;
+  // };
+
+  const materialList = materials1.map(material => (
+    <IngredientComponent food_name={material} />
+  ));
+
   useEffect(() => {
     getData(route.params.food_id);
-    // setParams({...params, q: `${foodName}`});
   }, []);
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -245,27 +262,12 @@ function Recipe({navigation, route}) {
             </View>
 
             <View style={{flexDirection: 'row', marginBottom: Height * 0.01}}>
-              <Image
-                source={require('../../android/app/assets/Ingredient/chicken.png')}
-                style={styles.icon}
-              />
-              <Image
-                source={require('../../android/app/assets/Ingredient/sausage.png')}
-                style={styles.icon}
-              />
-
-              <Image
-                source={require('../../android/app/assets/Ingredient/meatball.png')}
-                style={styles.icon}
-              />
-              <Image
-                source={require('../../android/app/assets/Ingredient/ramen.png')}
-                style={styles.icon}
-              />
-              <IngredientComponent />
+              {/* <IngredientComponent food_name={materials.material5} />
+              <IngredientComponent food_name={materials.material11} /> */}
+              {materialList}
             </View>
           </View>
-          <View style={{flex: 1}}>
+          {/* <View style={{flex: 1}}>
             <Text style={{color: '#FFCDD2'}}>조미료</Text>
 
             <View
@@ -283,7 +285,7 @@ function Recipe({navigation, route}) {
                 style={styles.icon}
               />
             </View>
-          </View>
+          </View> */}
 
           <Text>{showDetail ? detail : null}</Text>
 
@@ -303,7 +305,7 @@ function Recipe({navigation, route}) {
                 style={styles.texticon}
               />
               <Text style={{marginTop: Width * 0.04, flexShrink: 1}}>
-                {orders.Order1}
+                {orders.Order1.substring(2)}
               </Text>
             </View>
 
@@ -313,7 +315,7 @@ function Recipe({navigation, route}) {
                 style={styles.texticon}
               />
               <Text style={{marginTop: Width * 0.04, flexShrink: 1}}>
-                {orders.Order2}
+                {orders.Order2.substring(2)}
               </Text>
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -322,7 +324,16 @@ function Recipe({navigation, route}) {
                 style={styles.texticon}
               />
               <Text style={{marginTop: Width * 0.04, flexShrink: 1}}>
-                {orders.Order3}
+                {orders.Order3.substring(2)}
+              </Text>
+            </View>
+            <View style={{flexDirection: 'row'}}>
+              <Image
+                source={require('../../android/app/assets/icons/4.png')}
+                style={styles.texticon}
+              />
+              <Text style={{marginTop: Width * 0.04, flexShrink: 1}}>
+                {orders.Order4.substring(2)}
               </Text>
             </View>
           </View>
@@ -392,8 +403,9 @@ const styles = StyleSheet.create({
   },
   texticon: {
     height: Height * 0.02,
-    width: Width * 0.02,
+    width: Width * 0.03,
     margin: Width * 0.04,
+    resizeMode: 'stretch',
   },
 });
 
