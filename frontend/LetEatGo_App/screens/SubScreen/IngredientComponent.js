@@ -6,7 +6,7 @@ const Width = Dimensions.get('window').width;
 
 const icons = [
   {
-    foodname: '계란',
+    foodname: '달걀',
     src: require('../../Ingredients/0.png'),
   },
   {
@@ -680,12 +680,28 @@ const icons = [
 ];
 
 function IngredientComponent({food_name}) {
-  const [foodID, setFoodID] = useState('바나나');
+  if (
+    food_name !== '' &&
+    icons.find(element => element.foodname === food_name) === undefined
+  ) {
+    return (
+      <View>
+        <TouchableOpacity style={styles.iconButton}>
+          <Image
+            style={{...styles.icon}}
+            source={require('../../Ingredients/mystery.png')}
+          />
+          <Text style={styles.iconText}>{food_name}</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
   const iconlist = icons.map(icon =>
     food_name === icon.foodname ? (
       <View>
-        <TouchableOpacity>
+        <TouchableOpacity style={styles.iconButton}>
           <Image style={styles.icon} source={icon.src} />
+          <Text style={styles.iconText}>{icon.foodname}</Text>
         </TouchableOpacity>
       </View>
     ) : null,
@@ -693,14 +709,30 @@ function IngredientComponent({food_name}) {
   return <View>{iconlist}</View>;
 }
 
-const styles = {
+const styles = StyleSheet.create({
   icon: {
-    height: Height * 0.11,
-    width: Width * 0.17,
-    marginRight: Width * 0.03,
+    height: Height * 0.06,
+    width: Width * 0.13,
+    // marginRight: Width * 0.05,
     marginTop: Height * 0.01,
     resizeMode: 'stretch',
+    // backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-};
+  iconText: {
+    width: Width * 0.13,
+    fontSize: 12,
+    // backgroundColor: 'blue',
+    textAlign: 'center',
+  },
+  iconButton: {
+    // marginRight: Width * 0.05,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: Width * 0.18,
+    marginBottom: Height * 0.02,
+  },
+});
 
 export default IngredientComponent;

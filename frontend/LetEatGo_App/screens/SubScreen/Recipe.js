@@ -244,7 +244,10 @@ function Recipe({navigation, route}) {
           }}>
           <View style={{flex: 0.45}}>
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
               <Text style={{color: '#FFCDD2'}}>식재료</Text>
               <TouchableOpacity
                 style={{
@@ -261,7 +264,12 @@ function Recipe({navigation, route}) {
               </TouchableOpacity>
             </View>
 
-            <View style={{flexDirection: 'row', marginBottom: Height * 0.01}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginBottom: Height * 0.01,
+                flexWrap: 'wrap',
+              }}>
               {/* <IngredientComponent food_name={materials.material5} />
               <IngredientComponent food_name={materials.material11} /> */}
               {materialList}
@@ -293,7 +301,8 @@ function Recipe({navigation, route}) {
             style={{
               flex: 0.1,
               marginBottom: Height * 0.05,
-              marginTop: Height * 0.02,
+              // marginTop: Height * 0.02,
+              // backgroundColor: 'red',
             }}>
             <Text style={{color: '#FFCDD2'}}>레시피</Text>
             <View
@@ -305,7 +314,7 @@ function Recipe({navigation, route}) {
                 style={styles.texticon}
               />
               <Text style={{marginTop: Width * 0.04, flexShrink: 1}}>
-                {orders.Order1.substring(2)}
+                {('' + orders.Order1).substring(2)}
               </Text>
             </View>
 
@@ -315,7 +324,7 @@ function Recipe({navigation, route}) {
                 style={styles.texticon}
               />
               <Text style={{marginTop: Width * 0.04, flexShrink: 1}}>
-                {orders.Order2.substring(2)}
+                {('' + orders.Order2).substring(2)}
               </Text>
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -324,7 +333,7 @@ function Recipe({navigation, route}) {
                 style={styles.texticon}
               />
               <Text style={{marginTop: Width * 0.04, flexShrink: 1}}>
-                {orders.Order3.substring(2)}
+                {('' + orders.Order3).substring(2)}
               </Text>
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -333,7 +342,7 @@ function Recipe({navigation, route}) {
                 style={styles.texticon}
               />
               <Text style={{marginTop: Width * 0.04, flexShrink: 1}}>
-                {orders.Order4.substring(2)}
+                {('' + orders.Order4).substring(2)}
               </Text>
             </View>
           </View>
