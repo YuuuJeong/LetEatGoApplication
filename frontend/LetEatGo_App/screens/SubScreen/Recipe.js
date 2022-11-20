@@ -32,7 +32,7 @@ function Recipe({navigation, route}) {
   const [playing, setPlaying] = useState(true);
   const [foodName, setFoodName] = useState('제육볶음');
   const [videoName, setVideoName] = useState('');
-  const [videoId, setVideoId] = useState('');
+  const [videoId, setVideoId] = useState('j7s9VRsrm9o');
   const [materials1, setMaterials1] = useState([]);
 
   // const [params, setParams] = useState({
@@ -92,14 +92,12 @@ function Recipe({navigation, route}) {
       // console.log('\n');
       // console.log(response.data.recipe);
       // console.log('\n');
-      console.log(response.data.recipe.general);
+      // console.log(response.data.recipe.general);
       setDetail(response.data.recipe.detail);
       setOrders(response.data.recipe.general.order);
       setFoodName(response.data.recipe.general.foodname);
       setMaterials1(Object.values(response.data.recipe.general.material));
-
-      // console.log(response.data.recipe.general.material);
-      console.log(materials1);
+      // console.log(materials1);
       console.log(foodName);
       // findLink();
     } catch (e) {
@@ -151,13 +149,6 @@ function Recipe({navigation, route}) {
       <Topbar navigation={navigation} />
       <View style={{flex: 0.55, padding: 5}}>
         <View style={{flex: 0.65}}>
-          {/* <Image
-            source={{
-              url: {url},
-            }}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="stretch"
-          /> */}
           <YoutubePlayer height={300} play={playing} videoId={videoId} />
         </View>
 
@@ -256,8 +247,6 @@ function Recipe({navigation, route}) {
                   padding: 3,
                 }}
                 onPress={() => {
-                  // console.log(typeof route.params.food_id);
-                  // getData(route.params.food_id);
                   showDetail ? setShowDetail(false) : setShowDetail(true);
                 }}>
                 <Text style={{fontSize: 12, color: 'white'}}>자세히 보기</Text>
@@ -270,30 +259,9 @@ function Recipe({navigation, route}) {
                 marginBottom: Height * 0.01,
                 flexWrap: 'wrap',
               }}>
-              {/* <IngredientComponent food_name={materials.material5} />
-              <IngredientComponent food_name={materials.material11} /> */}
               {materialList}
             </View>
           </View>
-          {/* <View style={{flex: 1}}>
-            <Text style={{color: '#FFCDD2'}}>조미료</Text>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginBottom: Height * 0.01,
-              }}>
-              <Image
-                source={require('../../android/app/assets/Ingredient/sesame_oil.png')}
-                style={styles.icon}
-              />
-              <Image
-                source={require('../../android/app/assets/Ingredient/soy_sauce.png')}
-                style={styles.icon}
-              />
-            </View>
-          </View> */}
 
           <Text>{showDetail ? detail : null}</Text>
 
@@ -301,8 +269,6 @@ function Recipe({navigation, route}) {
             style={{
               flex: 0.1,
               marginBottom: Height * 0.05,
-              // marginTop: Height * 0.02,
-              // backgroundColor: 'red',
             }}>
             <Text style={{color: '#FFCDD2'}}>레시피</Text>
             <View

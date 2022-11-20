@@ -687,10 +687,16 @@ function IngredientComponent({food_name}) {
     return (
       <View>
         <TouchableOpacity style={styles.iconButton}>
-          <Image
-            style={{...styles.icon}}
-            source={require('../../Ingredients/mystery.png')}
-          />
+          <View style={{flexDirection: 'row'}}>
+            <Image
+              style={{...styles.icon}}
+              source={require('../../Ingredients/mystery.png')}
+            />
+            <Image
+              style={{position: 'absolute', right: 0}}
+              source={require('../../Ingredients/addButton.png')}
+            />
+          </View>
           <Text style={styles.iconText}>{food_name}</Text>
         </TouchableOpacity>
       </View>
@@ -700,7 +706,14 @@ function IngredientComponent({food_name}) {
     food_name === icon.foodname ? (
       <View>
         <TouchableOpacity style={styles.iconButton}>
-          <Image style={styles.icon} source={icon.src} />
+          <View style={{flexDirection: 'row'}}>
+            <Image style={styles.icon} source={icon.src} />
+            <Image
+              style={{position: 'absolute', right: 0}}
+              source={require('../../Ingredients/addButton.png')}
+            />
+          </View>
+
           <Text style={styles.iconText}>{icon.foodname}</Text>
         </TouchableOpacity>
       </View>
@@ -732,6 +745,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: Width * 0.18,
     marginBottom: Height * 0.02,
+    marginTop: Height * 0.01,
   },
 });
 
