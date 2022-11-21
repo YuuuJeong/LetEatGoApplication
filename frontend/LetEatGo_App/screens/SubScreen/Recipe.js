@@ -148,12 +148,27 @@ function Recipe({navigation, route}) {
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <Topbar navigation={navigation} />
       <View style={{flex: 0.55, padding: 5}}>
-        <View style={{flex: 0.65}}>
-          <YoutubePlayer height={300} play={playing} videoId={videoId} />
+        <View
+          style={{
+            flex: 0.8,
+            // backgroundColor: 'red',
+            // marginBottom: Height * 0.02,
+            justifyContent: 'flex-end',
+          }}>
+          <YoutubePlayer
+            height={Height * 0.3}
+            play={playing}
+            videoId={videoId}
+          />
         </View>
 
-        <View style={{flex: 0.35, marginTop: Height * 0.005}}>
-          <Text style={styles.text}>{videoName}</Text>
+        <View
+          style={{
+            flex: 0.3,
+            marginTop: Height * 0.005,
+            // backgroundColor: 'blue',
+          }}>
+          <Text style={styles.text}>Hello World</Text>
           <View
             style={{
               flexDirection: 'row',
@@ -226,12 +241,13 @@ function Recipe({navigation, route}) {
           </View>
         </View>
       </View>
-      <View style={{flex: 0.45}}>
+      <View style={{flex: 0.55}}>
         <ScrollView
           style={{
             paddingLeft: Width * 0.03,
             paddingRight: Width * 0.03,
             flex: 1,
+            paddingTop: Height * 0.02,
           }}>
           <View style={{flex: 0.45}}>
             <View
@@ -360,6 +376,8 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     padding: 5,
     flex: 0.5,
+    marginBottom: Height * 0.01,
+    // backgroundColor: 'red',
   },
   topButtonText: {
     fontSize: 14,
