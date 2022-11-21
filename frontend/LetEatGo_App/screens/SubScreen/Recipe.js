@@ -15,6 +15,7 @@ import YoutubePlayer from 'react-native-youtube-iframe';
 import WebView from 'react-native-webview';
 import IngredientComponent from './IngredientComponent';
 import Topbar from '../Bar/Topbar';
+import RecipeTopArea from './RecipeTopArea';
 
 const Height = Dimensions.get('window').height;
 const Width = Dimensions.get('window').width;
@@ -147,7 +148,7 @@ function Recipe({navigation, route}) {
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <Topbar navigation={navigation} />
-      <View style={{flex: 0.55, padding: 5}}>
+      {/* <View style={{flex: 0.55, padding: 5}}>
         <View
           style={{
             flex: 0.8,
@@ -240,7 +241,8 @@ function Recipe({navigation, route}) {
             </Text>
           </View>
         </View>
-      </View>
+      </View> */}
+      <RecipeTopArea food_name={'탕수육'} />
       <View style={{flex: 0.55}}>
         <ScrollView
           style={{
