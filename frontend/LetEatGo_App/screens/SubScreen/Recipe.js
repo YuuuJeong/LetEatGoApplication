@@ -31,7 +31,7 @@ function Recipe({navigation, route}) {
   const [detail, setDetail] = useState('');
   const [showDetail, setShowDetail] = useState(false);
   const [playing, setPlaying] = useState(true);
-  const [foodName, setFoodName] = useState('제육볶음');
+  const [foodName, setFoodName] = useState('닭도리탕');
   const [videoName, setVideoName] = useState('');
   const [videoId, setVideoId] = useState('j7s9VRsrm9o');
   const [materials1, setMaterials1] = useState([]);
@@ -93,13 +93,15 @@ function Recipe({navigation, route}) {
       // console.log('\n');
       // console.log(response.data.recipe);
       // console.log('\n');
-      // console.log(response.data.recipe.general);
+      console.log(response.data.recipe.general.order);
       setDetail(response.data.recipe.detail);
       setOrders(response.data.recipe.general.order);
       setFoodName(response.data.recipe.general.foodname);
+      // setFoodName(response.data.recipe.general.foodname);
       setMaterials1(Object.values(response.data.recipe.general.material));
       // console.log(materials1);
-      console.log(foodName);
+      // console.log('Hello');
+      // console.log(foodName);
       // findLink();
     } catch (e) {
       console.log(e);
@@ -242,7 +244,7 @@ function Recipe({navigation, route}) {
           </View>
         </View>
       </View> */}
-      <RecipeTopArea food_name={'탕수육'} />
+      <RecipeTopArea food_name={foodName} />
       <View style={{flex: 0.55}}>
         <ScrollView
           style={{
@@ -297,9 +299,21 @@ function Recipe({navigation, route}) {
                 source={require('../../android/app/assets/icons/1.png')}
                 style={styles.texticon}
               />
-              <Text style={{marginTop: Width * 0.04, flexShrink: 1}}>
-                {('' + orders.Order1).substring(2)}
-              </Text>
+              <View style={{flexShrink: 1}}>
+                <Text style={{marginTop: Width * 0.04}}>
+                  {('' + orders.Order1).substring(2)}
+                </Text>
+                <Image
+                  style={{
+                    width: Width * 0.5,
+                    height: Height * 0.17,
+                    borderRadius: 12,
+                  }}
+                  source={{
+                    uri: orders.Order1_img,
+                  }}
+                />
+              </View>
             </View>
 
             <View style={{flexDirection: 'row'}}>
@@ -307,27 +321,64 @@ function Recipe({navigation, route}) {
                 source={require('../../android/app/assets/icons/2.png')}
                 style={styles.texticon}
               />
-              <Text style={{marginTop: Width * 0.04, flexShrink: 1}}>
-                {('' + orders.Order2).substring(2)}
-              </Text>
+              <View style={{flexShrink: 1}}>
+                <Text style={{marginTop: Width * 0.04, flexShrink: 1}}>
+                  {('' + orders.Order2).substring(2)}
+                </Text>
+                <Image
+                  style={{
+                    width: Width * 0.5,
+                    height: Height * 0.17,
+                    borderRadius: 12,
+                  }}
+                  source={{
+                    uri: orders.Order2_img,
+                  }}
+                />
+              </View>
             </View>
             <View style={{flexDirection: 'row'}}>
               <Image
                 source={require('../../android/app/assets/icons/3.png')}
                 style={styles.texticon}
               />
-              <Text style={{marginTop: Width * 0.04, flexShrink: 1}}>
-                {('' + orders.Order3).substring(2)}
-              </Text>
+
+              <View style={{flexShrink: 1}}>
+                <Text style={{marginTop: Width * 0.04, flexShrink: 1}}>
+                  {('' + orders.Order3).substring(2)}
+                </Text>
+                <Image
+                  style={{
+                    width: Width * 0.5,
+                    height: Height * 0.17,
+                    borderRadius: 12,
+                  }}
+                  source={{
+                    uri: orders.Order3_img,
+                  }}
+                />
+              </View>
             </View>
             <View style={{flexDirection: 'row'}}>
               <Image
                 source={require('../../android/app/assets/icons/4.png')}
                 style={styles.texticon}
               />
-              <Text style={{marginTop: Width * 0.04, flexShrink: 1}}>
-                {('' + orders.Order4).substring(2)}
-              </Text>
+              <View style={{flexShrink: 1}}>
+                <Text style={{marginTop: Width * 0.04, flexShrink: 1}}>
+                  {('' + orders.Order4).substring(2)}
+                </Text>
+                <Image
+                  style={{
+                    width: Width * 0.5,
+                    height: Height * 0.17,
+                    borderRadius: 12,
+                  }}
+                  source={{
+                    uri: orders.Order4_img,
+                  }}
+                />
+              </View>
             </View>
           </View>
         </ScrollView>
@@ -379,7 +430,7 @@ const styles = StyleSheet.create({
     padding: 5,
     flex: 0.5,
     marginBottom: Height * 0.01,
-    // backgroundColor: 'red',
+    // backgroundColor: 'blue',
   },
   topButtonText: {
     fontSize: 14,

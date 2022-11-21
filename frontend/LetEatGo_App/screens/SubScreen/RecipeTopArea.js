@@ -43,10 +43,11 @@ function RecipeTopArea({navigation, food_name}) {
 
   axios.defaults.baseURL = 'https://www.googleapis.com/youtube/v3';
 
-  const findLink = useCallback(() => {
-    axios
+  const findLink = useCallback(async () => {
+    await axios
       .get('/search', {params})
       .then(response => {
+        console.log('Hi');
         console.log(response.data.items[0].snippet.title);
         setVideoName(response.data.items[0].snippet.title);
         setVideoId(response.data.items[0].id.videoId);
@@ -89,16 +90,19 @@ function RecipeTopArea({navigation, food_name}) {
     findLink();
   }, []);
 
+  console.log('Here');
+  console.log(food_name);
+
   return (
     <View style={{flex: 0.55, padding: 5}}>
       <View
         style={{
-          flex: 0.8,
-          // backgroundColor: 'red',
+          flex: 0.7,
+          //   backgroundColor: 'red',
           // marginBottom: Height * 0.02,
           justifyContent: 'flex-end',
         }}>
-        <YoutubePlayer height={Height * 0.3} play={playing} videoId={videoId} />
+        <YoutubePlayer height={'100%'} play={playing} videoId={videoId} />
       </View>
 
       <View
@@ -218,7 +222,7 @@ const styles = StyleSheet.create({
     width: Height * 0.15,
   },
   text: {
-    fontSize: 15,
+    fontSize: 17,
     fontWeight: '900',
     padding: 5,
     flex: 1,
