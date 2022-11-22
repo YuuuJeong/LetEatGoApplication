@@ -23,6 +23,7 @@ import Notice from './screens/SubScreen/Notice';
 import Recipe from './screens/SubScreen/Recipe';
 import Search from './screens/SubScreen/Search';
 import Survey from './screens/SubScreen/Survey';
+import MbtiSurvey from './screens/SubScreen/MbtiSurvey';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -79,8 +80,8 @@ const HomeStackScreen = ({navigation, route}) => {
         options={{headerShown: false}}
       />
       <HomeStack.Screen
-        name="MBTI"
-        component={Mbti}
+        name="MbtiServey"
+        component={MbtiSurvey}
         options={{headerShown: false}}
       />
     </HomeStack.Navigator>

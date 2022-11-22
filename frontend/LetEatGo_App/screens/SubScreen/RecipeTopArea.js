@@ -160,7 +160,11 @@ function RecipeTopArea({navigation, food_name}) {
                 alignItems: 'flex-end',
               }}>
               <TouchableOpacity
-                style={{...styles.bottomButton, width: Width * 0.25}}>
+                style={{
+                  ...styles.bottomButton,
+                  width: Width * 0.25,
+                  marginRight: Width * 0.01,
+                }}>
                 <Image
                   source={require('../../android/app/assets/icons/Share.png')}
                 />
@@ -202,7 +206,7 @@ const styles = StyleSheet.create({
     width: Width * 0.2,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: Width * 0.01,
+    marginRight: Width * 0.02,
     elevation: 2.5,
   },
   bottomButtonText: {

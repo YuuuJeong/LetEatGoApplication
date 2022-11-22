@@ -84,7 +84,7 @@ function Recipe({navigation, route}) {
                   backgroundColor: '#A4A4A4',
                   borderRadius: 10,
                   padding: 3,
-                  marginRight: Width * 0.015,
+                  marginRight: Width * 0.012,
                 }}
                 onPress={() => {
                   showDetail ? setShowDetail(false) : setShowDetail(true);

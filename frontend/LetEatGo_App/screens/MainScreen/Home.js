@@ -77,7 +77,7 @@ function Home({navigation, route}) {
       </View>
       <View style={{...styles.box, marginBottom: '5%'}}>
         <Text style={styles.BeforeText}>나의 식습관 지표 MBTI</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('MBTI')}>
+        <TouchableOpacity onPress={() => navigation.navigate('MbtiServey')}>
           <Text style={styles.ButtonText}>알아보기</Text>
         </TouchableOpacity>
       </View>
