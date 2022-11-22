@@ -25,13 +25,6 @@ function RecipeTopArea({navigation, food_name}) {
   const [playing, setPlaying] = useState(true);
   const [videoName, setVideoName] = useState('');
   const [videoId, setVideoId] = useState('j7s9VRsrm9o');
-  //    const [params, setParams] = useState({
-  //     key: 'AIzaSyC5Ss_A2H0Z9kWdY21AcQawsWCJRvFPA3k',
-  //     q: '제육볶음',
-  //     type: 'video',
-  //     maxResults: 3,
-  //     part: 'snippet',
-  //   });
 
   const params = {
     key: 'AIzaSyC5Ss_A2H0Z9kWdY21AcQawsWCJRvFPA3k',
@@ -47,24 +40,20 @@ function RecipeTopArea({navigation, food_name}) {
     await axios
       .get('/search', {params})
       .then(response => {
-        console.log('Hi');
-        console.log(response.data.items[0].snippet.title);
+        console.log(response.data.items[0]);
         setVideoName(response.data.items[0].snippet.title);
         setVideoId(response.data.items[0].id.videoId);
         if (!response) {
           setError('검색된 영상이 없습니다');
           return;
         }
-        // console.log(response.data.item)
       })
       .catch(err => {
-        console.log('Hi');
         console.log(err);
       });
-  }, [params]);
+  }, [params.q]);
 
-  const link =
-    'https://www.youtube.com/watch?v=oEWZ4DOgVK4&ab_channel=GONGSAMTABLE%EC%9D%B4%EA%B3%B5%EC%82%BC';
+  const link = `https://www.youtube.com/watch?v=${videoId}`;
 
   const onShare = async () => {
     try {
@@ -87,19 +76,18 @@ function RecipeTopArea({navigation, food_name}) {
   };
 
   useEffect(() => {
-    findLink();
-  }, []);
+    const tryFindLink = async () => {
+      await findLink();
+    };
 
-  console.log('Here');
-  console.log(food_name);
+    tryFindLink();
+  }, [findLink]);
 
   return (
     <View style={{flex: 0.55, padding: 5}}>
       <View
         style={{
           flex: 0.7,
-          //   backgroundColor: 'red',
-          // marginBottom: Height * 0.02,
           justifyContent: 'flex-end',
         }}>
         <YoutubePlayer height={'100%'} play={playing} videoId={videoId} />
@@ -108,7 +96,6 @@ function RecipeTopArea({navigation, food_name}) {
       <View
         style={{
           flex: 0.3,
-          //   marginTop: Height * 0.005,
         }}>
         <Text style={styles.text}>{videoName}</Text>
         <View
@@ -116,68 +103,79 @@ function RecipeTopArea({navigation, food_name}) {
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
+            marginTop: Height * 0.01,
             padding: 5,
             flex: 0.5,
-            // backgroundColor: 'red',
           }}>
-          <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity
-              style={styles.bottomButton}
-              onPress={
-                like === false
-                  ? () => {
-                      setLike(true);
-                      setLikeCount(likeCount + 1);
-                    }
-                  : () => {
-                      setLike(false);
-                      setLikeCount(likeCount - 1);
-                    }
-              }>
-              <Image
-                source={
-                  like === true
-                    ? require('../../android/app/assets/icons/Heart.png')
-                    : require('../../android/app/assets/icons/EmptyHeart.png')
-                }
-              />
-              <Text style={styles.bottomButtonText}>{likeCount}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.bottomButton}
-              onPress={
-                made === false
-                  ? () => {
-                      setMade(true);
-                      setMadeCount(madeCount + 1);
-                    }
-                  : () => {
-                      setMade(false);
-                      setMadeCount(madeCount - 1);
-                    }
-              }>
-              <Image
-                source={
-                  made === true
-                    ? require('../../android/app/assets/icons/Checked.png')
-                    : require('../../android/app/assets/icons/Check.png')
-                }
-              />
-              <Text style={styles.bottomButtonText}>{madeCount}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.bottomButton}>
-              <Image
-                source={require('../../android/app/assets/icons/Share.png')}
-              />
-              <Text style={styles.bottomButtonText2} onPress={() => onShare()}>
-                공유하기
-              </Text>
-            </TouchableOpacity>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{flex: 0.5, flexDirection: 'row'}}>
+              <TouchableOpacity
+                style={styles.bottomButton}
+                onPress={
+                  like === false
+                    ? () => {
+                        setLike(true);
+                        setLikeCount(likeCount + 1);
+                      }
+                    : () => {
+                        setLike(false);
+                        setLikeCount(likeCount - 1);
+                      }
+                }>
+                <Image
+                  source={
+                    like === true
+                      ? require('../../android/app/assets/icons/Heart.png')
+                      : require('../../android/app/assets/icons/EmptyHeart.png')
+                  }
+                />
+                <Text style={styles.bottomButtonText}>{likeCount}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.bottomButton}
+                onPress={
+                  made === false
+                    ? () => {
+                        setMade(true);
+                        setMadeCount(madeCount + 1);
+                      }
+                    : () => {
+                        setMade(false);
+                        setMadeCount(madeCount - 1);
+                      }
+                }>
+                <Image
+                  source={
+                    made === true
+                      ? require('../../android/app/assets/icons/Checked.png')
+                      : require('../../android/app/assets/icons/Check.png')
+                  }
+                />
+                <Text style={styles.bottomButtonText}>{madeCount}</Text>
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                flex: 0.5,
+                alignItems: 'flex-end',
+              }}>
+              <TouchableOpacity
+                style={{...styles.bottomButton, width: Width * 0.25}}>
+                <Image
+                  source={require('../../android/app/assets/icons/Share.png')}
+                />
+                <Text
+                  style={styles.bottomButtonText2}
+                  onPress={() => onShare()}>
+                  공유하기
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <Text>
+          {/* <Text>
             조회수{' '}
             {view.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}회
-          </Text>
+          </Text> */}
         </View>
       </View>
     </View>
@@ -205,7 +203,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: Width * 0.01,
-    elevation: 1,
+    elevation: 2.5,
   },
   bottomButtonText: {
     fontSize: 19,
@@ -226,8 +224,6 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     padding: 5,
     flex: 1,
-    // marginBottom: Height * 0.02,
-    // backgroundColor: 'red',
   },
   topButtonText: {
     fontSize: 14,

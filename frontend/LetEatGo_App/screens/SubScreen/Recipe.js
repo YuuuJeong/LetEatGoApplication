@@ -36,109 +36,21 @@ function Recipe({navigation, route}) {
   const [videoId, setVideoId] = useState('j7s9VRsrm9o');
   const [materials1, setMaterials1] = useState([]);
 
-  // const [params, setParams] = useState({
-  //   key: 'AIzaSyC5Ss_A2H0Z9kWdY21AcQawsWCJRvFPA3k',
-  //   q: '제육볶음',
-  //   type: 'video',
-  //   maxResults: 3,
-  //   part: 'snippet',
-  // });
-
-  // axios.defaults.baseURL = 'https://www.googleapis.com/youtube/v3/search';
-
-  // const findLink = useCallback(() => {
-  //   axios
-  //     .get('https://www.googleapis.com/youtube/v3/search', {params})
-  //     .then(response => {
-  //       console.log(response.data);
-  //       // setVideoName(response.data.items[0].snippet.title);
-  //       // setVideoId(response.data.items[0].id.videoId);
-  //       if (!response) {
-  //         setError('검색된 영상이 없습니다');
-  //         return;
-  //       }
-  //       // console.log(response.data.item)
-  //     })
-  //     .catch(err => {
-  //       console.log('Hi');
-  //       console.log(err);
-  //     });
-  // }, [params]);
-
-  // async function findLink() {
-  //   params = {
-  //     key: 'AIzaSyC5Ss_A2H0Z9kWdY21AcQawsWCJRvFPA3k',
-  //     q: '제육볶음',
-  //     type: 'video',
-  //     maxResults: 3,
-  //     part: 'snippet',
-  //   };
-  //   try {
-  //     const response2 = await axios.get(
-  //       'https://www.googleapis.com/youtube/v3/search',
-  //       {params},
-  //     );
-  //     console.log(response2);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
-
   async function getData(food_id) {
     try {
       const response = await axios.get(
         `http://10.0.2.2:80/recipe?foodid=${food_id}`,
       );
-      // console.log(response);
-      // console.log('\n');
-      // console.log(response.data.recipe);
-      // console.log('\n');
-      console.log(response.data.recipe.general.order);
+
+      console.log(response.data.recipe.general.foodname);
       setDetail(response.data.recipe.detail);
       setOrders(response.data.recipe.general.order);
       setFoodName(response.data.recipe.general.foodname);
-      // setFoodName(response.data.recipe.general.foodname);
       setMaterials1(Object.values(response.data.recipe.general.material));
-      // console.log(materials1);
-      // console.log('Hello');
-      // console.log(foodName);
-      // findLink();
     } catch (e) {
       console.log(e);
     }
   }
-
-  const link =
-    'https://www.youtube.com/watch?v=oEWZ4DOgVK4&ab_channel=GONGSAMTABLE%EC%9D%B4%EA%B3%B5%EC%82%BC';
-
-  const onShare = async () => {
-    try {
-      const result = await Share.share({
-        message: link,
-      });
-
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          console.log('activityType!');
-        } else {
-          console.log('Share!');
-        }
-      } else if (result.action === Share.dismissedAction) {
-        console.log('dismissed!');
-      }
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
-  // const matList = () => {
-  //   console.log('hi');
-  //   const materialList = materials1.map(material => (
-  //     <IngredientComponent food_name={material} />
-  //   ));
-
-  //   return materialList;
-  // };
 
   const materialList = materials1.map(material => (
     <IngredientComponent food_name={material} />
@@ -150,105 +62,11 @@ function Recipe({navigation, route}) {
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <Topbar navigation={navigation} />
-      {/* <View style={{flex: 0.55, padding: 5}}>
-        <View
-          style={{
-            flex: 0.8,
-            // backgroundColor: 'red',
-            // marginBottom: Height * 0.02,
-            justifyContent: 'flex-end',
-          }}>
-          <YoutubePlayer
-            height={Height * 0.3}
-            play={playing}
-            videoId={videoId}
-          />
-        </View>
-
-        <View
-          style={{
-            flex: 0.3,
-            marginTop: Height * 0.005,
-            // backgroundColor: 'blue',
-          }}>
-          <Text style={styles.text}>Hello World</Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: 5,
-              flex: 0.5,
-            }}>
-            <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity
-                style={styles.bottomButton}
-                onPress={
-                  like === false
-                    ? () => {
-                        setLike(true);
-                        setLikeCount(likeCount + 1);
-                      }
-                    : () => {
-                        setLike(false);
-                        setLikeCount(likeCount - 1);
-                      }
-                }>
-                <Image
-                  source={
-                    like === true
-                      ? require('../../android/app/assets/icons/Heart.png')
-                      : require('../../android/app/assets/icons/EmptyHeart.png')
-                  }
-                />
-                <Text style={styles.bottomButtonText}>{likeCount}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.bottomButton}
-                onPress={
-                  made === false
-                    ? () => {
-                        setMade(true);
-                        setMadeCount(madeCount + 1);
-                      }
-                    : () => {
-                        setMade(false);
-                        setMadeCount(madeCount - 1);
-                      }
-                }>
-                <Image
-                  source={
-                    made === true
-                      ? require('../../android/app/assets/icons/Checked.png')
-                      : require('../../android/app/assets/icons/Check.png')
-                  }
-                />
-                <Text style={styles.bottomButtonText}>{madeCount}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.bottomButton}>
-                <Image
-                  source={require('../../android/app/assets/icons/Share.png')}
-                />
-                <Text
-                  style={styles.bottomButtonText2}
-                  onPress={() => onShare()}>
-                  공유하기
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <Text>
-              조회수{' '}
-              {view.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}
-              회
-            </Text>
-          </View>
-        </View>
-      </View> */}
       <RecipeTopArea food_name={foodName} />
       <View style={{flex: 0.55}}>
         <ScrollView
           style={{
-            paddingLeft: Width * 0.03,
+            paddingLeft: Width * 0.04,
             paddingRight: Width * 0.03,
             flex: 1,
             paddingTop: Height * 0.02,
@@ -258,6 +76,7 @@ function Recipe({navigation, route}) {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
+                marginBottom: Height * 0.01,
               }}>
               <Text style={{color: '#FFCDD2'}}>식재료</Text>
               <TouchableOpacity
@@ -265,6 +84,7 @@ function Recipe({navigation, route}) {
                   backgroundColor: '#A4A4A4',
                   borderRadius: 10,
                   padding: 3,
+                  marginRight: Width * 0.015,
                 }}
                 onPress={() => {
                   showDetail ? setShowDetail(false) : setShowDetail(true);
@@ -276,7 +96,8 @@ function Recipe({navigation, route}) {
             <View
               style={{
                 flexDirection: 'row',
-                marginBottom: Height * 0.01,
+                // marginBottom: Height * 0.02,
+                // marginLeft: Width * 0.01,
                 flexWrap: 'wrap',
               }}>
               {materialList}

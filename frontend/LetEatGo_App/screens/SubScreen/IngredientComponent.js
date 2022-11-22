@@ -704,7 +704,7 @@ function IngredientComponent({food_name}) {
   }
   const iconlist = icons.map(icon =>
     food_name === icon.foodname ? (
-      <View>
+      <View key="{icon}">
         <TouchableOpacity style={styles.iconButton}>
           <View style={{flexDirection: 'row'}}>
             <Image style={styles.icon} source={icon.src} />
