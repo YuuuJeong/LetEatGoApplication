@@ -9,13 +9,18 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Height = Dimensions.get('window').height;
 const Width = Dimensions.get('window').width;
 
 function Topbar({navigation}) {
   return (
-    <View style={styles.block}>
+    <LinearGradient
+      style={styles.block}
+      colors={['#FFCDD2', '#FFAAB3']}
+      start={{x: 0, y: 0}}
+      end={{x: 1, y: 0}}>
       <Text style={styles.text}>입맛춤</Text>
       <View style={styles.StatusBarIcon}>
         <TouchableOpacity
@@ -40,7 +45,7 @@ function Topbar({navigation}) {
           />
         </TouchableOpacity>
       </View>
-    </View>
+    </LinearGradient>
   );
 }
 
