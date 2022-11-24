@@ -9,7 +9,7 @@ const db = require('./models');
 const { PythonShell } = require("python-shell");
 
 const { sequelize } = require('./models/index');
-//const userRouter = require('./routes/user');
+const userRouter = require('./routes/user');
 const checkRouter = require('./routes/check');
 const recipeRouter = require('./routes/recipe');
 //const testRouter = require('./routes/test');
@@ -75,7 +75,7 @@ startInterval(60*60*2, async function() {
 
 app.use('/', mainRouter);
 app.use('/', recipeRouter);
-//app.use('/user', userRouter);
+app.use('/user', userRouter);
 app.use('/check', checkRouter);
 //app.use('/test', testRouter);
 app.use('/search', searchRouter);
