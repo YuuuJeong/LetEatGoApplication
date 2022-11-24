@@ -5,3 +5,6 @@ package-lock.json
 mock.csv
 test.py
 testController.js
+/node_modules
+test.js
+user2.csv

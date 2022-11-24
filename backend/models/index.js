@@ -2,7 +2,9 @@ const Sequelize = require("sequelize");
 const User = require("./user");
 const Food = require("./food");
 const Recipe = require("./recipe");
-const Mock = require("./mock");
+const Prefer = require("./prefer");
+const Ingredient = require("./ingredient");
+const Cart = require("./cart");
 
 const env = process.env.NODE_ENV || "development";
 const config = require("../config/config")[env];
@@ -21,14 +23,16 @@ db.sequelize = sequelize;
 db.Food = Food;
 db.User = User;
 db.Recipe = Recipe;
-db.Mock = Mock;
+db.Prefer = Prefer;
+db.Ingredient = Ingredient;
+db.Cart = Cart;
 
-
-
+Prefer.init(sequelize);
 Food.init(sequelize);
 User.init(sequelize);
 Recipe.init(sequelize);
-Mock.init(sequelize);
+Ingredient.init(sequelize);
+Cart.init(sequelize);
 
 
 module.exports = db;

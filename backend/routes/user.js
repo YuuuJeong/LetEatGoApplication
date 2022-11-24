@@ -1,9 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('../controller/userController');
+const userController = require('../controller/userController');
 
 
-router.post('/signup',  authController.signup); 
-router.post('/signin',  authController.signin);
-
+router.post('/signup',  userController.signup); 
+router.post('/signin',  userController.signin);
+router.get('/made', userController.getMade);
+router.get('/like', userController.getLike);
+router.post('/like', userController.postLike);
+router.post('/made', userController.postMade);
+router.put('/made/update', userController.updateMade);
+router.put('/like/update', userController.updateLike); 
 module.exports = router;
