@@ -1,6 +1,7 @@
 const dotenv = require("dotenv");
 dotenv.config();
 
+
 const express = require('express');
 const session = require('express-session');
 const morgan = require('morgan');
@@ -41,19 +42,23 @@ const updateHybrid = async() => {
 };
 app.set('port', process.env.PORT || 80);
 
+
 app.use(morgan("dev"));
 
 app.use(cors());
 
 app.use(express.json());
 
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
-db.sequelize.sync().then(() => {
-        console.log('db connect success');
-    }).catch(console.error);
+db.sequelize
+  .sync()
+  .then(() => {
+    console.log("db connect success");
+  })
+  .catch(console.error);
 
-app.use(session({ secret: 'SECRET' }));
+app.use(session({ secret: "SECRET" }));
 
 app.use(
   session({
@@ -65,6 +70,7 @@ app.use(
       secure: false,
     },
   })
+
 );    
 //보유식재료 => 가지고있는거 띄워주는거, 업데이트하는거, 삭제하는거
 //prefer csv업데이트 -> 
@@ -84,11 +90,12 @@ app.use('/recommend', recommendRouter);
 app.use('/user/cart', cartRouter);
 app.use('/user/ingredient', ingredientRouter);
 
+
 app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(err.status || 500).send(err.message);
-  });
-  
-  app.listen(app.get("port"), () => {
-    console.log(app.get("port"), "번 포트에서 대기중");
-  });
+  console.error(err);
+  res.status(err.status || 500).send(err.message);
+});
+
+app.listen(app.get("port"), () => {
+  console.log(app.get("port"), "번 포트에서 대기중");
+});
