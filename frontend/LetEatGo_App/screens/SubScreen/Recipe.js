@@ -53,7 +53,7 @@ function Recipe({navigation, route}) {
   }
 
   const materialList = materials1.map(material => (
-    <IngredientComponent food_name={material} />
+    <IngredientComponent key={material} food_name={material} />
   ));
 
   useEffect(() => {

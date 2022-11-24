@@ -53,9 +53,9 @@ import {TextInput} from 'react-native-gesture-handler';
 
 const HomeStackScreen = ({navigation, route}) => {
   return (
-    <HomeStack.Navigator initialRouteName="Home">
+    <HomeStack.Navigator initialRouteName="HomeScreen">
       <HomeStack.Screen
-        name="Home"
+        name="HomeScreen"
         component={Home}
         options={{headerShown: false}}
       />
@@ -110,9 +110,9 @@ const Main = ({navigation, route}) => {
   return (
     <Tab.Navigator
       style={styles.top}
-      initialRouteName="HomeStack"
-      tabBarOptions={{
-        labelStyle: {
+      initialRouteName="Home"
+      screenOptions={{
+        tabBarLabelStyle: {
           color: '#FFAAB3',
           fontWeight: '500',
           fontSize: 11,

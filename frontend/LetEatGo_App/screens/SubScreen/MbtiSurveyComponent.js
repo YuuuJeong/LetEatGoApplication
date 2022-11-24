@@ -21,7 +21,7 @@ function MbtiSurveyComponent({text}) {
   const [checked4, setChecked4] = useState(false);
   const [checked5, setChecked5] = useState(false);
   return (
-    <View style={{alignItems: 'center', marginBottom: Height * 0.03}}>
+    <View style={{alignItems: 'center', marginVertical: Height * 0.03}}>
       <Text
         style={{
           fontSize: 18,
@@ -38,6 +38,11 @@ function MbtiSurveyComponent({text}) {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
+        <View style={{alignItems: 'center'}}>
+          <Text>그렇지</Text>
+          <Text>않다</Text>
+        </View>
+
         <TouchableOpacity
           style={{
             ...styles.Button,
@@ -58,8 +63,8 @@ function MbtiSurveyComponent({text}) {
         <TouchableOpacity
           style={{
             ...styles.Button,
-            width: Width * 0.13,
-            height: Width * 0.13,
+            width: Width * 0.12,
+            height: Width * 0.12,
             borderColor: '#c0c4e2',
             backgroundColor: checked2 ? '#c0c4e2' : '#FFFFFF',
           }}
@@ -96,8 +101,8 @@ function MbtiSurveyComponent({text}) {
         <TouchableOpacity
           style={{
             ...styles.Button,
-            width: Width * 0.13,
-            height: Width * 0.13,
+            width: Width * 0.12,
+            height: Width * 0.12,
             backgroundColor: checked4 ? '#FFCDD2' : '#FFFFFF',
           }}
           onPress={() => {
@@ -127,6 +132,7 @@ function MbtiSurveyComponent({text}) {
             source={require('../../android/app/assets/icons/MbtiCheck.png')}
           />
         </TouchableOpacity>
+        <Text>그렇다</Text>
       </View>
     </View>
   );
@@ -134,8 +140,8 @@ function MbtiSurveyComponent({text}) {
 
 const styles = StyleSheet.create({
   Button: {
-    width: Width * 0.17,
-    height: Width * 0.17,
+    width: Width * 0.15,
+    height: Width * 0.15,
     borderWidth: 3,
     borderColor: '#FFCDD2',
     borderRadius: 50,
