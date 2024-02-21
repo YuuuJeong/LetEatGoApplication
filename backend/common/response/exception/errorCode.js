@@ -41,6 +41,10 @@ const ErrorCode = {
     code: HttpStatusCode.Unauthorized,
     message: '비밀번호가 일치하지 않습니다.',
   },
+  SAME_REQUEST: {
+    code: HttpStatusCode.BadRequest,
+    message: '단시간내에 동일한 요청을 보낼 수 없습니다.',
+  },
 };
 
 function CreateErrorCode({ code, message }, errors) {

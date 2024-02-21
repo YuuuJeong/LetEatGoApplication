@@ -12,6 +12,10 @@ const {
 } = require('../common/response/exception/errorCode');
 const userService = require('./userService');
 const { CreateSuccessResponse } = require('../common/response/successCode');
+const preferService = require('../prefer/preferService');
+const extractUserId = require('../utils/extractUserId');
+const foodService = require('../food/foodService');
+const redisClientSingleton = require('../utils/redisClient');
 
 const userController = {
   signup: asyncHandler(async (req, res, next) => {
@@ -69,122 +73,43 @@ const userController = {
     return res.json(CreateSuccessResponse('로그인 성공'));
   }),
 
-  getMade: asyncHandler(async (req, res, next) => {
-    const userId = req.session.user.id;
+  getUserMadeFoods: asyncHandler(async (req, res, next) => {
+    const userId = extractUserId(req);
 
-    const foodIds = await Prefer.findAll({
-      attributes: ['foodid'],
-      where: {
-        userid: userId,
-        made: true,
-      },
-    }).map((item) => item.foodid);
+    const foods = await preferService.getFoodsByUserPrefer(userId, {
+      made: true,
+    });
 
-    const foodData = await Food.findAll({
-      attributes: ['Name', 'Image', 'foodid'],
-      where: {
-        foodid: { [Op.in]: foodIds },
-      },
-    });
-    return res.json({
-      statusCode: CODE.SUCCESS,
-      msg: '만들어본 음식들 리스트입니다.',
-      result: foodData,
-    });
+    return res.json(
+      CreateSuccessResponse('유저가 만들어본 음식 리스트입니다.', foods),
+    );
   }),
-  getLike: async (req, res, err) => {
-    try {
-      const userLike = await Prefer.findAll({
-        attributes: ['foodid'],
-        raw: true,
-        where: {
-          userid: req.query.userid,
-          favorite: true,
-        },
-      });
-      let foodarr = [];
-      for (let i = 0; i < userLike.length; i++) {
-        foodarr.push(userLike[i].foodid);
-      }
-      const foodData = await Food.findAll({
-        attributes: ['Name', 'Image', 'foodid'],
-        raw: true,
-        where: {
-          foodid: { [Op.in]: foodarr },
-        },
-      });
-      return res.json({
-        statusCode: CODE.SUCCESS,
-        msg: '해당 유저가 좋아요 누른 음식들 리스트입니다.',
-        result: foodData,
-      });
-    } catch (err) {
-      console.error(err);
-      return res.json({ statusCode: CODE.FAIL, msg: '데이터베이스 오류' });
-    }
-  },
-  updateLike: async (req, res, err) => {
-    try {
-      const updateUser = await Prefer.update(
-        {
-          favorite: req.body.favorite,
-        },
-        {
-          where: {
-            userid: req.body.userid,
-            foodid: req.body.foodid,
-          },
-        },
-      ); // User 찾고 좋아요 업데이트
-      if (updateUser) {
-        return res.json({
-          statusCode: CODE.SUCCESS,
-          msg: '좋아요를 업데이트시켰습니다.',
-        });
-      } else {
-        return res.json({
-          statusCode: CODE.FAIL,
-          msg: '업데이트 시킬 데이터가 없습니다.',
-        });
-      }
-    } catch (err) {
-      console.error(err);
-      return res.json({ statusCode: CODE.FAIL, msg: 'db 오류' });
-    }
-  },
-  updateMade: async (req, res, err) => {
-    try {
-      const deleteFood = await Prefer.update(
-        {
-          made: false,
-        },
-        {
-          where: {
-            userid: req.body.userid,
-            foodid: req.body.foodid,
-          },
-        },
-      );
+  getUserLikedFoods: asyncHandler(async (req, res, next) => {
+    const userId = extractUserId(req);
 
-      if (deleteFood) {
-        return res.json({
-          statusCOde: CODE.SUCCESS,
-          msg: '만들어본 음식을 삭제하였습니다.',
-        });
-      } else {
-        return (
-          res,
-          json({
-            statusCode: CODE.FAIL,
-            msg: '해당 유저의 선택한 음식이 데이터베이스에 없습니다.',
-          })
-        );
-      }
-    } catch (error) {
-      console.error(error);
-      return res.json({ statusCode: CODE.FAIL, msg: 'db 오류' });
+    const foods = await preferService.getFoodsByUserPrefer(userId, {
+      favorite: true,
+    });
+
+    return res.json(
+      CreateSuccessResponse('유저가 좋아요 누른 음식 리스트입니다', foods),
+    );
+  }),
+  getMyInfo: asyncHandler(async (req, res, next) => {
+    const userId = extractUserId(req);
+
+    const user = await userService.findUserById(userId);
+
+    if (!user) {
+      throw new ErrorResponse(CreateErrorCode(ErrorCode.USER_NOT_FOUND));
     }
-  },
+
+    if (user.deletedAt !== null) {
+      throw new ErrorResponse(CreateErrorCode(ErrorCode.WITHDRAW_USER));
+    }
+
+    return res.json(CreateSuccessResponse('내 정보입니다.', user));
+  }),
 };
 
 module.exports = userController;

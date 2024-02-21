@@ -6,15 +6,15 @@ from sklearn.metrics.pairwise import cosine_similarity
 readpath = "./csv/prefer.csv"
 savepath = "./csv/Hybrid_predict.csv"
 
-r_cols = ['userid', 'sex','foodid', 'survey', 'like', 'made', 'view']
+r_cols = ['userId', 'sex','foodId', 'survey', 'like', 'made', 'view']
 a, b, c, d = 1, 1, 1, 2
 ratings = pd.read_csv(readpath, names=r_cols, encoding='latin-1')
 ratings=ratings.iloc[1:]
-ratings = ratings[['userid', 'foodid', 'survey', 'like', 'made', 'view']].astype(float)
+ratings = ratings[['userId', 'foodid', 'survey', 'like', 'made', 'view']].astype(float)
 #print(ratings)
 totalview = []
 for id in range(1, len(ratings) + 1) :
-    sum = ratings[(ratings['userid'] == ratings['userid'][id])]['view'].sum()
+    sum = ratings[(ratings['userId'] == ratings['userId'][id])]['view'].sum()
     if (sum == 0) :
         sum = 1
     totalview.append(sum)
@@ -24,7 +24,7 @@ for i in range(1, len(ratings) + 1) :
     if(ratings['totalview'][i] <= 5) :
         rateview[i] = 0.5 * rateview[i]
 ratings['rate'] = a * ratings['survey'] + b * ratings['like'] + c * ratings['made'] + d * rateview
-ratings = ratings[['userid', 'foodid', 'rate']].astype(float)
+ratings = ratings[['userId', 'foodid', 'rate']].astype(float)
 for i in range(1, len(ratings) + 1) :
     if(ratings['rate'][i] < 0) :
         ratings['rate'][i] = 0
@@ -55,7 +55,7 @@ class MF():
             #one_id == row(uid)
             user_id_index.append([one_id, i])
             index_user_id.append([i, one_id])
-        self.user_id_index = dict(user_id_index) #key가 userid
+        self.user_id_index = dict(user_id_index) #key가 userId
         self.index_user_id = dict(index_user_id) #key가 index
 #### <<<<< (2)
         self.num_users, self.num_items = np.shape(self.R)
@@ -152,7 +152,7 @@ beta = 0.05
 iterations = 250
 K = 100
 #print(ratings)
-R_temp = ratings.pivot_table(index='userid', columns='foodid', values='rate').fillna(0)
+R_temp = ratings.pivot_table(index='userId', columns='foodid', values='rate').fillna(0)
 #print(R_temp)
 mf = MF(R_temp, K=K, alpha=alpha, beta=beta, iterations=iterations, verbose=False)
 test_set = mf.set_test(ratings_test)
@@ -180,7 +180,7 @@ def RMSE(y_true, y_pred):
 
 # 모델별 RMSE를 계산하는 함수
 def score(model):
-    id_pairs = zip(ratings_test['userid'], ratings_test['foodid'])
+    id_pairs = zip(ratings_test['userId'], ratings_test['foodid'])
     pred = np.array([model(user, food) for (user, food) in id_pairs])
     true = np.array(ratings_test['rate'])
     pred = np.nan_to_num(pred)
@@ -189,13 +189,13 @@ def score(model):
 
 # 주어진 음식의 (food_id) 가중평균 rating을 계산하는 함수,
 # 가중치는 주어진 아이템과 다른 아이템 간의 유사도(item_similarity)
-def CF_IBCF(userid, foodid):
+def CF_IBCF(userId, foodid):
     if foodid in item_similarity:      # 현재 음식이 train set에 있는지 확인
-        if userid in rating_matrix_t:  
+        if userId in rating_matrix_t:  
         # 현재 음식과 다른 음식의 similarity 값 가져오기
             sim_scores = item_similarity[foodid]
             # 현 사용자의 모든 rating 값 가져오기
-            user_rating = rating_matrix_t[userid]
+            user_rating = rating_matrix_t[userId]
             # 사용자가 평가하지 않은 음식 index 가져오기
             non_rating_idx = user_rating[user_rating.isnull()].index
             # 사용자가 평가하지 않은 음식 제거
@@ -203,7 +203,7 @@ def CF_IBCF(userid, foodid):
             # 사용자가 평가하지 않은 음식의 similarity 값 제거
             sim_scores = sim_scores.drop(non_rating_idx)
             # 현 음식에 대한 예상 rating 계산, 가중치는 현 음식과 사용자가 평가한 음식의 유사도
-            average = rating_matrix_t[userid].sum()/ rating_matrix_t[userid].notnull().sum()
+            average = rating_matrix_t[userId].sum()/ rating_matrix_t[userId].notnull().sum()
             rating = np.dot(sim_scores, user_rating) / sim_scores.sum()
             mean_rating = rating + average
         else:
@@ -216,13 +216,13 @@ def CF_IBCF(userid, foodid):
 ibcf_score = score(CF_IBCF)
 
 #KNN 을 활용한 iBCF
-def ibcf_knn(userid, foodid, neighbor_size=40):
-    if userid in rating_matrix_t:       # 사용자가 train set에 있는지 확인
+def ibcf_knn(userId, foodid, neighbor_size=40):
+    if userId in rating_matrix_t:       # 사용자가 train set에 있는지 확인
         if foodid in item_similarity:     # 현재 음식이 train set에 있는지 확인
             # 현재 음식과 다른 영화의 similarity 값 가져오기
             sim_scores = item_similarity[foodid]
             # 현 사용자의 모든 rating 값 가져오기
-            user_rating = rating_matrix_t[userid]
+            user_rating = rating_matrix_t[userId]
             # 사용자가 평가하지 않은 음식 index 가져오기
             non_rating_idx = user_rating[user_rating.isnull()].index
             # 사용자가 평가하지 않은 음식 제거
@@ -264,18 +264,18 @@ def ibcf_knn(userid, foodid, neighbor_size=40):
 knn_score = score(ibcf_knn)
 
 def recommend(model) :
-    id_pairs = zip(ratings['userid'], ratings['foodid'])
+    id_pairs = zip(ratings['userId'], ratings['foodid'])
     pred = []
     foodid = []
-    userid = []
+    userId = []
     res_df = pd.DataFrame()
     for (user, food) in id_pairs :
         foodid.append(food)
-        userid.append(user)
+        userId.append(user)
         pred.append(ibcf_knn(user, food))
     pred = np.nan_to_num(pred)
     res_df = res_df.assign(foodid = foodid)
-    res_df = res_df.assign(userid = userid)
+    res_df = res_df.assign(userId = userId)
     res_df = res_df.assign(pred = pred)
     return res_df
 
@@ -284,12 +284,12 @@ if (ibcf_score > knn_score) :
     result = recommend(knn_score)
 else : result = recommend(ibcf_score)
 #print(result)
-IBCF_matrix = result.pivot_table(index='userid', columns='foodid', values='pred').fillna(0)
+IBCF_matrix = result.pivot_table(index='userId', columns='foodid', values='pred').fillna(0)
 print(IBCF_matrix)
 Hybrid_matrix = IBCF_matrix.add(MF_matrix)
 #print(Hybrid_matrix)
 
-pred_mat = pd.DataFrame(columns = ['userid', 'foodid'])
+pred_mat = pd.DataFrame(columns = ['userId', 'foodid'])
 idx = 0
 for id in Hybrid_matrix.index :
     result = Hybrid_matrix.loc[id].nlargest(10, keep='first')

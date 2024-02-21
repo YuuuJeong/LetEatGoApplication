@@ -1,11 +1,11 @@
-const { INTEGER, STRING } = require("sequelize");
-const Sequelize = require("sequelize");
+const { INTEGER, STRING } = require('sequelize');
+const Sequelize = require('sequelize');
 
 module.exports = class Recipe extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-        recipeid: {
+        id: {
           type: Sequelize.INTEGER,
           allowNull: false,
           autoIncrement: true,
@@ -22,21 +22,21 @@ module.exports = class Recipe extends Sequelize.Model {
       },
       {
         sequelize,
-        timestamps: false,
+        timestamps: true,
         underscored: false,
         paranoid: false,
-        modelName: "recipe",
-        tableName: "Recipe",
-        charset: "utf8",
-        collate: "utf8_general_ci",
-      }
+        modelName: 'recipe',
+        tableName: 'Recipe',
+        charset: 'utf8',
+        collate: 'utf8_general_ci',
+      },
     );
   }
 
   static associate(db) {
     db.Recipe.belongsTo(db.Food, {
-      foreignKey: "foodid",
-      sourceKey: "foodid",
+      foreignKey: 'foodid',
+      sourceKey: 'foodid',
     });
   }
 };

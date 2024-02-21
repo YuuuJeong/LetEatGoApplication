@@ -1,16 +1,16 @@
-const { INTEGER } = require("sequelize");
-const Sequelize = require("sequelize");
+const { INTEGER } = require('sequelize');
+const Sequelize = require('sequelize');
 module.exports = class Cart extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-        index: {
+        id: {
           type: Sequelize.INTEGER,
           allowNull: false,
           autoIncrement: true,
           primaryKey: true,
         },
-        userid: {
+        userId: {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
@@ -24,11 +24,11 @@ module.exports = class Cart extends Sequelize.Model {
         timestamps: false,
         underscored: false,
         paranoid: false,
-        modelName: "cart",
-        tableName: "Cart",
-        charset: "utf8",
-        collate: "utf8_general_ci",
-      }
+        modelName: 'cart',
+        tableName: 'Cart',
+        charset: 'utf8',
+        collate: 'utf8_general_ci',
+      },
     );
   }
 };

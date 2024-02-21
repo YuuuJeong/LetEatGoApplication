@@ -1,16 +1,16 @@
-const { INTEGER } = require("sequelize");
-const Sequelize = require("sequelize");
+const { INTEGER } = require('sequelize');
+const Sequelize = require('sequelize');
 module.exports = class Ingredient extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-        index: {
+        id: {
           type: Sequelize.INTEGER,
           allowNull: false,
           autoIncrement: true,
           primaryKey: true,
         },
-        userid: {
+        userId: {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
@@ -28,11 +28,11 @@ module.exports = class Ingredient extends Sequelize.Model {
         timestamps: false,
         underscored: false,
         paranoid: false,
-        modelName: "ingredient",
-        tableName: "Ingredient",
-        charset: "utf8",
-        collate: "utf8_general_ci",
-      }
+        modelName: 'ingredient',
+        tableName: 'Ingredient',
+        charset: 'utf8',
+        collate: 'utf8_general_ci',
+      },
     );
   }
 };

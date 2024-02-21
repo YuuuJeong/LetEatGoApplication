@@ -37,7 +37,27 @@ module.exports = class User extends Sequelize.Model {
         charset: 'utf8',
         collate: 'utf8_general_ci',
         tableName: 'User',
+        hooks: {
+          afterFind: async (record, options) => {
+            if (!record) {
+              return;
+            }
+            if (Array.isArray(record)) {
+              record.map((obj) => {
+                delete obj.password;
+                obj.sex = obj.sex === 1 ? '남자' : '여자';
+              });
+            } else {
+              delete record.password;
+              record.sex = record.sex === 1 ? '남자' : '여자';
+            }
+          },
+        },
       },
     );
+  }
+
+  static associate(models) {
+    this.hasMany(models.Prefer, { foreignKey: 'userId', sourceKey: 'id' });
   }
 };

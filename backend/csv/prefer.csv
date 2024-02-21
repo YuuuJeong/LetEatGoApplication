@@ -1,4 +1,4 @@
-userid,sex,foodid,survey,like,made,view
+userId,sex,foodId,survey,like,made,view
 0,0,9,-1,0,0,3
 0,0,12,-1,0,0,3
 0,0,28,1,1,0,4

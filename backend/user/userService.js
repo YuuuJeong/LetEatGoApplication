@@ -2,7 +2,7 @@ const { Op } = require('sequelize');
 const User = require('../models/user');
 
 const userService = {
-  findUserByEmail(email) {
+  async findUserByEmail(email) {
     return User.findOne({
       where: {
         email,
@@ -22,6 +22,11 @@ const userService = {
         deletedAt: null,
       },
       paranoid: false,
+    });
+  },
+  async findUserById(userId) {
+    return User.findByPk(userId, {
+      raw: true,
     });
   },
 };

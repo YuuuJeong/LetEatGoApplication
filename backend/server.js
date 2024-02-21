@@ -8,17 +8,19 @@ const cors = require('cors');
 const db = require('./models');
 
 const userRouter = require('./user/userRoute');
-const checkRouter = require('./routes/check');
-const recipeRouter = require('./routes/recipe');
-const searchRouter = require('./routes/search');
-const surveyRouter = require('./routes/survey');
-const recommendRouter = require('./routes/recommend');
-const mainRouter = require('./routes/main');
-const cartRouter = require('./routes/cart');
-const ingredientRouter = require('./routes/ingredient');
-const recommend = require('./controller/recommendController');
-const main = require('./controller/mainController');
+const preferRouter = require('./prefer/preferRoute');
 const globalErrorHandler = require('./middlewares/globalErrorHandler');
+
+// const checkRouter = require('./routes/check');
+// const recipeRouter = require('./routes/recipe');
+// const searchRouter = require('./routes/search');
+// const surveyRouter = require('./routes/survey');
+// const recommendRouter = require('./routes/recommend');
+// const mainRouter = require('./routes/main');
+// const cartRouter = require('./routes/cart');
+// const ingredientRouter = require('./routes/ingredient');
+// const recommend = require('./controller/recommendController');
+// const main = require('./controller/mainController');
 // const startInterval = (seconds, callback) => {
 //   callback();
 //   return setInterval(callback, seconds * 1000);
@@ -66,7 +68,9 @@ app.use(
 
 const apiRouter = express.Router();
 apiRouter.use('/users', userRouter);
+apiRouter.use('/prefers', preferRouter);
 app.use('/api', apiRouter);
+app.use(globalErrorHandler);
 
 //보유식재료 => 가지고있는거 띄워주는거, 업데이트하는거, 삭제하는거
 //prefer csv업데이트 ->
@@ -84,8 +88,6 @@ app.use('/api', apiRouter);
 // app.use("/recommend", recommendRouter);
 // app.use("/user/cart", cartRouter);
 // app.use("/user/ingredient", ingredientRouter);
-
-app.use(globalErrorHandler);
 
 app.listen(app.get('port'), () => {
   console.log(app.get('port'), '번 포트에서 대기중');

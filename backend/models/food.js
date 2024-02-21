@@ -1,10 +1,9 @@
-const { INTEGER } = require("sequelize");
-const Sequelize = require("sequelize");
+const Sequelize = require('sequelize');
 module.exports = class Food extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-        foodid: {
+        id: {
           type: Sequelize.INTEGER,
           allowNull: false,
           autoIncrement: true,
@@ -14,15 +13,15 @@ module.exports = class Food extends Sequelize.Model {
           type: Sequelize.JSON,
           allowNull: false,
         },
-        Name: {
+        name: {
           type: Sequelize.STRING(30),
           allowNull: false,
         },
-        Kind: {
+        kind: {
           type: Sequelize.TINYINT,
           allowNull: false,
         },
-        Image: {
+        image: {
           type: Sequelize.TEXT,
           allowNull: true,
         },
@@ -32,21 +31,15 @@ module.exports = class Food extends Sequelize.Model {
         timestamps: false,
         underscored: false,
         paranoid: false,
-        modelName: "food",
-        tableName: "Food",
-        charset: "utf8",
-        collate: "utf8_general_ci",
-      }
+        modelName: 'food',
+        tableName: 'Food',
+        charset: 'utf8',
+        collate: 'utf8_general_ci',
+      },
     );
   }
-  static associate(db) {
-    db.Food.hasOne(db.Recipe, {
-      foreignKey: "foodid",
-      sourceKey: "foodid",
-    });
-    db.Food.belongsToMany(db.Recipe, {
-      foreignKey: "foodid",
-      sourceKey: "foodid",
-    });
+
+  static associate(models) {
+    this.hasMany(models.Prefer, { foreignKey: 'foodId', sourceKey: 'id' });
   }
 };

@@ -17,9 +17,6 @@ const sequelize = new Sequelize(
   {
     dialect: config.dialect,
     host: config.host,
-    query: {
-      raw: true,
-    },
   },
 );
 
@@ -38,5 +35,11 @@ User.init(sequelize);
 Recipe.init(sequelize);
 Ingredient.init(sequelize);
 Cart.init(sequelize);
+
+Object.values(db).forEach((model) => {
+  if (model.associate) {
+    model.associate(db);
+  }
+});
 
 module.exports = db;
