@@ -1,15 +1,14 @@
-const { INTEGER } = require("sequelize");
-const Sequelize = require("sequelize");
+const Sequelize = require('sequelize');
 module.exports = class Prefer extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-        userid: {
+        userId: {
           type: Sequelize.INTEGER,
           allowNull: false,
           primaryKey: true,
         },
-        foodid: {
+        foodId: {
           type: Sequelize.INTEGER,
           allowNull: false,
           primaryKey: true,
@@ -29,18 +28,18 @@ module.exports = class Prefer extends Sequelize.Model {
         view: {
           type: Sequelize.SMALLINT,
           allowNull: true,
-        }
+        },
       },
       {
         sequelize,
         timestamps: false,
         underscored: false,
         paranoid: false,
-        modelName: "Prefer",
-        tableName: "prefer",
-        charset: "utf8",
-        collate: "utf8_general_ci",
-      }
+        modelName: 'prefer',
+        tableName: 'Prefer',
+        charset: 'utf8',
+        collate: 'utf8_general_ci',
+      },
     );
   }
 };
