@@ -13,7 +13,9 @@ const { comparePassword } = require('../utils/password');
 
 const User = require('../models/user');
 const db = require('../models');
-const Inventory = require('../models/inventory');
+const shoppingListService = require('../shoppingList/shoppingListService');
+const inventoryService = require('../inventory/inventoryService');
+const hasErrorsInValidation = require('../common/validator/validatorUtil');
 
 const destroySession = (req) =>
   new Promise((resolve, reject) => {
@@ -28,14 +30,8 @@ const destroySession = (req) =>
 
 const userController = {
   signup: asyncHandler(async (req, res) => {
-    const { errors } = validationResult(req);
+    hasErrorsInValidation(req);
     const { email, password, nickname, ...data } = req.body;
-
-    if (errors.length > 0) {
-      throw new ErrorResponse(
-        CreateErrorCode(ErrorCode.INVALID_REQUEST_PARAM, errors),
-      );
-    }
 
     let user = await userService.findUserByEmail(email);
 
@@ -63,8 +59,12 @@ const userController = {
   }),
 
   signin: asyncHandler(async (req, res) => {
+    hasErrorsInValidation(req);
+
     const { email, password } = req.body;
+
     const user = await userService.findUserByEmail(email);
+
     if (!user) {
       throw new ErrorResponse(CreateErrorCode(ErrorCode.USER_NOT_FOUND));
     }
@@ -131,6 +131,8 @@ const userController = {
   }),
 
   checkNicknameDuplicated: asyncHandler(async (req, res) => {
+    hasErrorsInValidation(req);
+
     const { nickname } = req.query;
     const user = await userService.findUserByNickname(nickname);
 
@@ -144,18 +146,37 @@ const userController = {
   }),
 
   fetchMyShoppingLists: asyncHandler(async (req, res) => {
+    hasErrorsInValidation(req);
     const userId = await extractUserId(req);
+    const paginateOptions = req.query;
+    const shoppingLists = await shoppingListService.getMyShoppingLists(
+      userId,
+      paginateOptions,
+    );
 
-    const totalCart = await Inventory.findAll({
-      where: {
-        userId,
-      },
-    });
+    return res.json(
+      CreateSuccessResponse(
+        '사야 할 식재료들을 조회하였습니다.',
+        shoppingLists,
+      ),
+    );
+  }),
+  fetchMyInventories: asyncHandler(async (req, res) => {
+    hasErrorsInValidation(req);
 
-    return res.json({
-      msg: '해당 유저의 카트 정보입니다.',
-      result: totalCart,
-    });
+    const userId = await extractUserId(req);
+    const paginateOptions = req.query;
+    const shoppingLists = await inventoryService.getMyInventories(
+      userId,
+      paginateOptions,
+    );
+
+    return res.json(
+      CreateSuccessResponse(
+        '현재 보유하고 있는 식재료들을 조회하였습니다.',
+        shoppingLists,
+      ),
+    );
   }),
 
   withdraw: asyncHandler(async (req, res) => {
