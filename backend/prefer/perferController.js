@@ -7,23 +7,22 @@ const {
 const { CreateSuccessResponse } = require('../common/response/successCode');
 const preferService = require('../prefer/preferService');
 const extractUserId = require('../utils/extractUserId');
-const redisClientSingleton = require('../utils/redisClient');
+const { redisClientSingleton } = require('../utils/redisClient');
 
 const preferController = {
   upsertPrefer: asyncHandler(async (req, res, next) => {
-    const userId = extractUserId(req);
+    const userId = await await extractUserId(req);
     const { foodId, ...data } = req.body;
-
     const redisKey = `prefer_${userId}_${foodId}`;
-    const redisClient = redisClientSingleton.getClient();
-    const tokenExists = await redisClient.exists(redisKey);
+    const ttl = 5;
+    const tokenExists = await redisClientSingleton.checkKeyExists(redisKey);
 
     if (tokenExists) {
       throw new ErrorResponse(CreateErrorCode(ErrorCode.SAME_REQUEST));
     }
 
     await Promise.all([
-      redisClient.setex(redisKey, 5, 1),
+      redisClientSingleton.setTemporaryKey(redisKey, ttl),
       preferService.upsertUserPreferredFood({
         ...data,
         userId,

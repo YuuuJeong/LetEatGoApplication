@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-module.exports = class Food extends Sequelize.Model {
+module.exports = class ShoppingList extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
@@ -9,30 +9,26 @@ module.exports = class Food extends Sequelize.Model {
           autoIncrement: true,
           primaryKey: true,
         },
-        material: {
-          type: Sequelize.JSON,
+        userId: {
+          type: Sequelize.INTEGER,
           allowNull: false,
         },
-        name: {
-          type: Sequelize.STRING(30),
+        materialId: {
+          type: Sequelize.INTEGER,
           allowNull: false,
         },
-        kind: {
-          type: Sequelize.TINYINT,
-          allowNull: false,
-        },
-        image: {
-          type: Sequelize.TEXT,
+        unit: {
+          type: Sequelize.STRING,
           allowNull: true,
         },
       },
       {
         sequelize,
-        timestamps: false,
+        timestamps: true,
         underscored: true,
-        paranoid: false,
-        modelName: 'food',
-        tableName: 'Food',
+        paranoid: true,
+        modelName: 'shoppingList',
+        tableName: 'ShoppingList',
         charset: 'utf8',
         collate: 'utf8_general_ci',
       },
@@ -40,6 +36,10 @@ module.exports = class Food extends Sequelize.Model {
   }
 
   static associate(models) {
-    this.hasMany(models.Prefer, { foreignKey: 'foodId', sourceKey: 'id' });
+    this.belongsTo(models.User, { foreignKey: 'userId', targetKey: 'id' });
+    this.belongsTo(models.Material, {
+      foreignKey: 'materialId',
+      targetKey: 'id',
+    });
   }
 };

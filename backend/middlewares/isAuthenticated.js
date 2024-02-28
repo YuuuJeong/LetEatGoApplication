@@ -6,9 +6,10 @@ const {
 const { asyncHandler } = require('../utils/asyncHandler');
 
 const isAuthenticated = asyncHandler((req, res, next) => {
-  if (req.session.user) {
-    return next(); // 다음 미들웨어로 진행
+  if (req.session.user && req.session.user.id) {
+    return next();
   }
+
   throw new ErrorResponse(CreateErrorCode(ErrorCode.INVALID_PERMISSION));
 });
 

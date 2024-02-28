@@ -1,6 +1,5 @@
-const { INTEGER } = require('sequelize');
 const Sequelize = require('sequelize');
-module.exports = class Cart extends Sequelize.Model {
+module.exports = class MaterialCategory extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
@@ -10,25 +9,28 @@ module.exports = class Cart extends Sequelize.Model {
           autoIncrement: true,
           primaryKey: true,
         },
-        userId: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-        },
-        materials: {
+        name: {
           type: Sequelize.STRING,
           allowNull: false,
         },
       },
       {
         sequelize,
-        timestamps: false,
-        underscored: false,
+        timestamps: true,
+        underscored: true,
         paranoid: false,
-        modelName: 'cart',
-        tableName: 'Cart',
+        modelName: 'materialCategory',
+        tableName: 'MaterialCategory',
         charset: 'utf8',
         collate: 'utf8_general_ci',
       },
     );
+  }
+
+  static associate(models) {
+    this.hasMany(models.Material, {
+      foreignKey: 'categoryId',
+      sourceKey: 'id',
+    });
   }
 };

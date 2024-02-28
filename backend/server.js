@@ -7,9 +7,12 @@ const morgan = require('morgan');
 const cors = require('cors');
 const db = require('./models');
 
+const RedisStore = require('connect-redis').default;
 const userRouter = require('./user/userRoute');
 const preferRouter = require('./prefer/preferRoute');
+const foodRouter = require('./food/foodRoute');
 const globalErrorHandler = require('./middlewares/globalErrorHandler');
+const { redisClientSingleton } = require('./utils/redisClient');
 
 // const checkRouter = require('./routes/check');
 // const recipeRouter = require('./routes/recipe');
@@ -26,6 +29,13 @@ const globalErrorHandler = require('./middlewares/globalErrorHandler');
 //   return setInterval(callback, seconds * 1000);
 // };
 const app = express();
+const redisClient = redisClientSingleton.getClient();
+
+const redisStore = new RedisStore({
+  client: redisClient,
+  ttl: 60 * 60 * 1000,
+});
+
 // const updateHybrid = async () => {
 //   try {
 //     let options = {
@@ -45,23 +55,20 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-db.sequelize
-  .sync()
-  .then(() => {
-    console.log('db connect success');
-  })
-  .catch(console.error);
-
-app.use(session({ secret: 'SECRET' }));
+db.sequelize.sync().then(() => {
+  console.log('db connect success');
+});
 
 app.use(
   session({
     resave: false,
-    saveUninitalized: false,
+    saveUninitalized: true,
     secret: process.env.COOKIE_SECRET,
+    store: redisStore,
     cookie: {
       httpOnly: true,
       secure: false,
+      maxAge: 60 * 60 * 1000,
     },
   }),
 );
@@ -69,6 +76,7 @@ app.use(
 const apiRouter = express.Router();
 apiRouter.use('/users', userRouter);
 apiRouter.use('/prefers', preferRouter);
+apiRouter.use('/foods', foodRouter);
 app.use('/api', apiRouter);
 app.use(globalErrorHandler);
 

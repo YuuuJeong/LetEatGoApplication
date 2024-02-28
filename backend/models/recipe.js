@@ -23,7 +23,7 @@ module.exports = class Recipe extends Sequelize.Model {
       {
         sequelize,
         timestamps: true,
-        underscored: false,
+        underscored: true,
         paranoid: false,
         modelName: 'recipe',
         tableName: 'Recipe',

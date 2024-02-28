@@ -13,5 +13,17 @@ router.get(
   userController.getUserLikedFoods,
 );
 router.get('/me/info', isAuthenticated, userController.getMyInfo);
+router.post('/logout', userController.logout);
+router.get(
+  '/check-nickname',
+  userValidator.checkNickname,
+  userController.checkNicknameDuplicated,
+);
 
+router.post('/withdraw', isAuthenticated, userController.withdraw);
+router.get(
+  '/me/shopping-lists',
+  isAuthenticated,
+  userController.fetchMyShoppingLists,
+);
 module.exports = router;

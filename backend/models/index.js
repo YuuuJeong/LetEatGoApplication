@@ -3,8 +3,10 @@ const User = require('./user');
 const Food = require('./food');
 const Recipe = require('./recipe');
 const Prefer = require('./prefer');
-const Ingredient = require('./ingredient');
-const Cart = require('./cart');
+const Inventory = require('./inventory');
+const ShoppingList = require('./shoppingList');
+const Material = require('./material');
+const MaterialCategory = require('./materialCategory');
 
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config')[env];
@@ -22,19 +24,23 @@ const sequelize = new Sequelize(
 
 db.sequelize = sequelize;
 
+db.Material = Material;
 db.Food = Food;
 db.User = User;
 db.Recipe = Recipe;
 db.Prefer = Prefer;
-db.Ingredient = Ingredient;
-db.Cart = Cart;
+db.Inventory = Inventory;
+db.ShoppingList = ShoppingList;
+db.MaterialCategory = MaterialCategory;
 
+User.init(sequelize);
 Prefer.init(sequelize);
 Food.init(sequelize);
-User.init(sequelize);
 Recipe.init(sequelize);
-Ingredient.init(sequelize);
-Cart.init(sequelize);
+Inventory.init(sequelize);
+ShoppingList.init(sequelize);
+Material.init(sequelize);
+MaterialCategory.init(sequelize);
 
 Object.values(db).forEach((model) => {
   if (model.associate) {

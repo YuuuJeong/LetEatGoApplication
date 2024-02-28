@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const User = require('./user');
 module.exports = class Prefer extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
@@ -37,8 +38,8 @@ module.exports = class Prefer extends Sequelize.Model {
       {
         sequelize,
         timestamps: true,
-        underscored: false,
-        paranoid: false,
+        underscored: true,
+        paranoid: true,
         modelName: 'prefer',
         tableName: 'Prefer',
         charset: 'utf8',
@@ -55,7 +56,9 @@ module.exports = class Prefer extends Sequelize.Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.User, { foreignKey: 'userId', targetKey: 'id' });
-    this.belongsTo(models.Food, { foreignKey: 'foodId', targetKey: 'id' });
+    this.belongsTo(models.User, {
+      foreignKey: 'userId',
+    });
+    this.belongsTo(models.Food, { foreignKey: 'foodId' });
   }
 };
