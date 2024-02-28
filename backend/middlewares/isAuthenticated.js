@@ -3,7 +3,7 @@ const {
   CreateErrorCode,
   ErrorCode,
 } = require('../common/response/exception/errorCode');
-const { asyncHandler } = require('../utils/asyncHandler');
+const { asyncHandler } = require('../common/utils/asyncHandler');
 
 const isAuthenticated = asyncHandler((req, res, next) => {
   if (req.session.user && req.session.user.id) {

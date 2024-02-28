@@ -1,17 +1,18 @@
 const ErrorResponse = require('../common/response/errorResponse');
-const { asyncHandler } = require('../utils/asyncHandler');
+
 const {
   CreateErrorCode,
   ErrorCode,
 } = require('../common/response/exception/errorCode');
 const { CreateSuccessResponse } = require('../common/response/successCode');
+const { asyncHandler } = require('../common/utils/asyncHandler');
+const extractUserId = require('../common/utils/extractUserId');
+const { redisClientSingleton } = require('../common/utils/redisClient');
 const preferService = require('../prefer/preferService');
-const extractUserId = require('../utils/extractUserId');
-const { redisClientSingleton } = require('../utils/redisClient');
 
 const preferController = {
   upsertPrefer: asyncHandler(async (req, res, next) => {
-    const userId = await await extractUserId(req);
+    const userId = await extractUserId(req);
     const { foodId, ...data } = req.body;
     const redisKey = `prefer_${userId}_${foodId}`;
     const ttl = 5;

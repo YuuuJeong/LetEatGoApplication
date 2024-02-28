@@ -12,7 +12,7 @@ const userRouter = require('./user/userRoute');
 const preferRouter = require('./prefer/preferRoute');
 const foodRouter = require('./food/foodRoute');
 const globalErrorHandler = require('./middlewares/globalErrorHandler');
-const { redisClientSingleton } = require('./utils/redisClient');
+const { redisClientSingleton } = require('./common/utils/redisClient');
 
 // const checkRouter = require('./routes/check');
 // const recipeRouter = require('./routes/recipe');

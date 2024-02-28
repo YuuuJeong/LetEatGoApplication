@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const { hashPassword } = require('../utils/password');
+const { hashPassword } = require('../common/utils/password');
 const sexEnum = require('../common/enums/sexEnum');
 const Prefer = require('./prefer');
 const ShoppingList = require('./shoppingList');

@@ -1,6 +1,6 @@
 const { validationResult } = require('express-validator');
 const ErrorResponse = require('../common/response/errorResponse');
-const { asyncHandler } = require('../utils/asyncHandler');
+const { asyncHandler } = require('../common/utils/asyncHandler');
 const {
   CreateErrorCode,
   ErrorCode,
@@ -8,8 +8,8 @@ const {
 const userService = require('./userService');
 const { CreateSuccessResponse } = require('../common/response/successCode');
 const preferService = require('../prefer/preferService');
-const extractUserId = require('../utils/extractUserId');
-const { comparePassword } = require('../utils/password');
+const extractUserId = require('../common/utils/extractUserId');
+const { comparePassword } = require('../common/utils/password');
 
 const User = require('../models/user');
 const db = require('../models');
@@ -163,9 +163,9 @@ const userController = {
   }),
   fetchMyInventories: asyncHandler(async (req, res) => {
     hasErrorsInValidation(req);
-
     const userId = await extractUserId(req);
     const paginateOptions = req.query;
+
     const shoppingLists = await inventoryService.getMyInventories(
       userId,
       paginateOptions,

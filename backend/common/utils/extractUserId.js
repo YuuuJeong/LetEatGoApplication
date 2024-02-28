@@ -1,9 +1,9 @@
-const ErrorResponse = require('../common/response/errorResponse');
+const ErrorResponse = require('../response/errorResponse');
 const {
   CreateErrorCode,
   ErrorCode,
-} = require('../common/response/exception/errorCode');
-const userService = require('../user/userService');
+} = require('../response/exception/errorCode');
+const userService = require('../../user/userService');
 
 async function extractUserId(req) {
   const user = await userService.findUserById(req.session.user.id);
