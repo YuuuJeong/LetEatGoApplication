@@ -24,6 +24,14 @@
 
 <img src="./readme/architecture.png">
 
+<br/>
+
+## ERD Diagram
+
+<img src="./readme/LetEatGoErd.png">
+
+<br/>
+
 ## 프로젝트 기능 & 페이지 구성 📱
 
 > 취향 맞춤 레시피 / 보유 식자재 기반 레시피 / 먹BTI
