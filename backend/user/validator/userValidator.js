@@ -32,8 +32,35 @@ const checkNickname = [
   query('nickname', 'nickname does not Empty').notEmpty().isString(),
 ];
 
+const addShoppingLists = [
+  body('shoppingLists')
+    .isArray()
+    .withMessage('Shopping lists must be an array'),
+  body('shoppingLists.*.materialId')
+    .isNumeric()
+    .withMessage('Material ID must be numeric'),
+  body('shoppingLists.*.unit').isString().withMessage('Unit must be a string'),
+];
+
+const addInventories = [
+  body('inventories').isArray().withMessage('inventories must be an array'),
+  body('inventories.*.materialId')
+    .isNumeric()
+    .withMessage('Material ID must be numeric'),
+  body('inventories.*.unit').isString().withMessage('Unit must be a string'),
+];
+
+const createSurvey = [
+  body('surveys').isArray().withMessage('surveys should be an array'),
+  body('surveys.*.foodId').isInt().withMessage('foodId should be an integer'),
+  body('surveys.*.like').isBoolean().withMessage('like should be a boolean'),
+];
+
 module.exports = {
   signIn,
   signUp,
   checkNickname,
+  addShoppingLists,
+  addInventories,
+  createSurvey,
 };

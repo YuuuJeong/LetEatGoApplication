@@ -76,7 +76,7 @@ app.use(
 const apiRouter = express.Router();
 apiRouter.use('/users', userRouter);
 apiRouter.use('/prefers', preferRouter);
-apiRouter.use('/foods', foodRouter);
+apiRouter.use('', foodRouter);
 app.use('/api', apiRouter);
 app.use(globalErrorHandler);
 

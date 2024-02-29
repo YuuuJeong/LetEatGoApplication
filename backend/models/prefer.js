@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const User = require('./user');
+const reactionEnum = require('../common/enums/reactionEnum');
 module.exports = class Prefer extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
@@ -45,10 +46,12 @@ module.exports = class Prefer extends Sequelize.Model {
         charset: 'utf8',
         collate: 'utf8_general_ci',
         hooks: {
-          afterFind: async (record, options) => {
-            if (!record) {
-              return;
-            }
+          beforeBulkCreate: (instances, options) => {
+            instances.map((instance) => {
+              instance.survey = instance.survey
+                ? reactionEnum.LIKE
+                : reactionEnum.DISLIKE;
+            });
           },
         },
       },

@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const FoodCategoryMapping = require('./foodCategoryMapping');
-module.exports = class Food extends Sequelize.Model {
+module.exports = class FoodCategory extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
@@ -11,27 +11,17 @@ module.exports = class Food extends Sequelize.Model {
           primaryKey: true,
         },
         name: {
-          type: Sequelize.STRING(30),
+          type: Sequelize.STRING,
           allowNull: false,
-        },
-        image: {
-          type: Sequelize.TEXT,
-          allowNull: true,
         },
       },
       {
-        indexes: [
-          {
-            name: 'food_name_index',
-            fields: ['name'],
-          },
-        ],
         sequelize,
-        timestamps: false,
+        timestamps: true,
         underscored: true,
         paranoid: false,
-        modelName: 'food',
-        tableName: 'Food',
+        modelName: 'foodCategory',
+        tableName: 'FoodCategory',
         charset: 'utf8',
         collate: 'utf8_general_ci',
       },
@@ -39,10 +29,9 @@ module.exports = class Food extends Sequelize.Model {
   }
 
   static associate(models) {
-    this.hasMany(models.Prefer, { foreignKey: 'foodId', sourceKey: 'id' });
-    this.belongsToMany(models.FoodCategory, {
+    this.belongsToMany(models.Food, {
       through: FoodCategoryMapping,
+      foreignKey: 'categoryId',
     });
-    this.hasMany(models.Top5, { foreignKey: 'foodId', sourceKey: 'id' });
   }
 };

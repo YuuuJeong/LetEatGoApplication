@@ -5,33 +5,35 @@ const shoppingListService = {
   async getMyShoppingLists(userId, paginateOptions) {
     const { page, size } = paginateOptions;
     const offset = (page - 1) * size;
-    const [nodes, count] = await Promise.all([
-      ShoppingList.findAll({
-        where: {
-          userId,
-          deletedAt: null,
-        },
+    const { rows, count } = await ShoppingList.findAndCountAll({
+      where: {
+        userId,
+        deletedAt: null,
+      },
+      include: {
+        model: Material,
         include: {
-          model: Material,
-          include: {
-            model: MaterialCategory,
-          },
+          model: MaterialCategory,
         },
-        offset,
-        limit: +size,
-      }),
-      ShoppingList.count({
-        where: {
-          userId,
-          deletedAt: null,
-        },
-      }),
-    ]);
+      },
+      offset,
+      limit: +size,
+    });
 
     return {
-      nodes,
+      nodes: rows,
       count,
     };
+  },
+  addShoppingLists(shoppingLists) {
+    return ShoppingList.bulkCreate(shoppingLists);
+  },
+  deleteShoppingList(id) {
+    return ShoppingList.destroy({
+      where: {
+        id,
+      },
+    });
   },
 };
 

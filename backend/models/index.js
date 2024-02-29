@@ -7,6 +7,9 @@ const Inventory = require('./inventory');
 const ShoppingList = require('./shoppingList');
 const Material = require('./material');
 const MaterialCategory = require('./materialCategory');
+const FoodCategory = require('./foodCategory');
+const FoodCategoryMapping = require('./foodCategoryMapping');
+const Top5 = require('./top5');
 
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config')[env];
@@ -24,14 +27,17 @@ const sequelize = new Sequelize(
 
 db.sequelize = sequelize;
 
+db.User = User;
 db.Material = Material;
 db.Food = Food;
-db.User = User;
+db.FoodCategory = FoodCategory;
 db.Recipe = Recipe;
 db.Prefer = Prefer;
 db.Inventory = Inventory;
 db.ShoppingList = ShoppingList;
 db.MaterialCategory = MaterialCategory;
+db.FoodCategoryMapping = FoodCategoryMapping;
+db.Top5 = Top5;
 
 User.init(sequelize);
 Prefer.init(sequelize);
@@ -41,7 +47,9 @@ Inventory.init(sequelize);
 ShoppingList.init(sequelize);
 Material.init(sequelize);
 MaterialCategory.init(sequelize);
-
+FoodCategory.init(sequelize);
+FoodCategoryMapping.init(sequelize);
+Top5.init(sequelize);
 Object.values(db).forEach((model) => {
   if (model.associate) {
     model.associate(db);

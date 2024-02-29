@@ -1,37 +1,56 @@
 import sys
-sys.path.append("/opt/homebrew/lib/python3.9/site-packages")
+import time
 import numpy as np
 import pandas as pd
-import os
 
+sys.path.append("/opt/homebrew/lib/python3.9/site-packages")
 
-if __name__ == '__main__':
-    r_cols = ['userId', 'sex','foodId', 'survey', 'like', 'made', 'view']
-    a, b, c, d = 1, 1, 1, 2
-    ratings = pd.read_csv("./prefer.csv", names=r_cols, encoding='latin-1')
-    ratings=ratings.iloc[1:]
+def load_data(file_path):
+    r_cols = ['userId', 'sex', 'foodId', 'survey', 'like', 'made', 'view']
+    ratings = pd.read_csv(file_path, names=r_cols, encoding='latin-1').iloc[1:]
     ratings = ratings[['userId', 'foodId', 'survey', 'like', 'made', 'view']].astype(float)
+    return ratings
+
+def calculate_totalview(ratings):
     totalview = []
-    for id in range(1, len(ratings) + 1) :
-        sum = ratings[(ratings['userId'] == ratings['userId'][id])]['view'].sum()
-        if (sum == 0) :
-            sum = 1
-        totalview.append(sum)
-    ratings = ratings.assign(totalview = totalview)
-    rateview = ratings['view'] / ratings['totalview']
-    for i in range(1, len(ratings) + 1) :
-        if(ratings['totalview'][i] <= 5) :
-            rateview[i] = 0.5 * rateview[i]
-    ratings['rate'] = a * ratings['survey'] + b * ratings['like'] + c * ratings['made'] + d * rateview
-    ratings = ratings[['userId', 'foodId', 'rate']].astype(float)
+    for user_id in range(1, len(ratings) + 1):
+        total_view_sum = ratings[ratings['userId'] == ratings['userId'][user_id]]['view'].sum()
+        totalview.append(total_view_sum if total_view_sum != 0 else 1)
+    ratings = ratings.assign(totalview=totalview)
+    return ratings
+
+def calculate_rateview(ratings):
+    ratings['rateview'] = ratings['view'] / ratings['totalview']
+    ratings.loc[ratings['totalview'] <= 5, 'rateview'] *= 0.5
+    return ratings
+
+def calculate_rate(ratings, a, b, c, d):
+    ratings['rate'] = a * ratings['survey'] + b * ratings['like'] + c * ratings['made'] + d * ratings['rateview']
+    return ratings[['userId', 'foodId', 'rate']].astype(float)
+
+def main():
+    start_time = time.time()
+
+    file_path = "../csv/prefer.csv"
+    a, b, c, d = 1, 1, 1, 2
+
+    ratings = load_data(file_path)
+    ratings = calculate_totalview(ratings)
+    ratings = calculate_rateview(ratings)
+    ratings = calculate_rate(ratings, a, b, c, d)
 
     df = ratings.pivot_table(index='userId', columns='foodId', values='rate').fillna(0)
     df = pd.DataFrame(df)
 
     result = df.sum().nlargest(5, keep='first')
-    out = []
-    for i in result.index:
-        out.append(int(i))
+    items = list(map(int, result.index))
 
     for item in out:
         print(item)
+
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    print(f"Execution time: {elapsed_time:.2f} seconds")
+
+if __name__ == '__main__':
+    main()

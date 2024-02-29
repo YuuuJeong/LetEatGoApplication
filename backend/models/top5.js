@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-module.exports = class Inventory extends Sequelize.Model {
+module.exports = class Top5 extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
@@ -9,32 +9,28 @@ module.exports = class Inventory extends Sequelize.Model {
           autoIncrement: true,
           primaryKey: true,
         },
-        userId: {
+        foodId: {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
-        materialId: {
+        rank: {
           type: Sequelize.INTEGER,
           allowNull: false,
-        },
-        unit: {
-          type: Sequelize.STRING,
-          allowNull: true,
         },
       },
       {
         indexes: [
           {
-            name: 'inventory_user_id_index',
-            fields: ['user_id'],
+            name: 'inventory_food_id_index',
+            fields: ['food_id'],
           },
         ],
         sequelize,
         timestamps: true,
         underscored: true,
         paranoid: true,
-        modelName: 'inventory',
-        tableName: 'Inventory',
+        modelName: 'top5',
+        tableName: 'Top5',
         charset: 'utf8',
         collate: 'utf8_general_ci',
       },
@@ -42,9 +38,8 @@ module.exports = class Inventory extends Sequelize.Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.User, { foreignKey: 'userId', targetKey: 'id' });
-    this.belongsTo(models.Material, {
-      foreignKey: 'materialId',
+    this.belongsTo(models.Food, {
+      foreignKey: 'foodId',
       targetKey: 'id',
     });
   }

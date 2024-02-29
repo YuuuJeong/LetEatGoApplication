@@ -16,6 +16,8 @@ const db = require('../models');
 const shoppingListService = require('../shoppingList/shoppingListService');
 const inventoryService = require('../inventory/inventoryService');
 const hasErrorsInValidation = require('../common/validator/validatorUtil');
+const materialService = require('../material/materialService');
+const surveyService = require('../survey/surveyService');
 
 const destroySession = (req) =>
   new Promise((resolve, reject) => {
@@ -86,7 +88,7 @@ const userController = {
   }),
 
   getUserMadeFoods: asyncHandler(async (req, res) => {
-    const userId = await extractUserId(req);
+    const userId = extractUserId(req);
 
     const foods = await preferService.getFoodsByUserPrefer(userId, {
       made: true,
@@ -98,7 +100,7 @@ const userController = {
   }),
 
   getUserLikedFoods: asyncHandler(async (req, res) => {
-    const userId = await extractUserId(req);
+    const userId = extractUserId(req);
 
     const foods = await preferService.getFoodsByUserPrefer(userId, {
       favorite: true,
@@ -110,7 +112,7 @@ const userController = {
   }),
 
   getMyInfo: asyncHandler(async (req, res) => {
-    const userId = await extractUserId(req);
+    const userId = extractUserId(req);
 
     const user = await userService.findUserById(userId);
 
@@ -147,7 +149,7 @@ const userController = {
 
   fetchMyShoppingLists: asyncHandler(async (req, res) => {
     hasErrorsInValidation(req);
-    const userId = await extractUserId(req);
+    const userId = extractUserId(req);
     const paginateOptions = req.query;
     const shoppingLists = await shoppingListService.getMyShoppingLists(
       userId,
@@ -161,9 +163,10 @@ const userController = {
       ),
     );
   }),
+
   fetchMyInventories: asyncHandler(async (req, res) => {
     hasErrorsInValidation(req);
-    const userId = await extractUserId(req);
+    const userId = extractUserId(req);
     const paginateOptions = req.query;
 
     const shoppingLists = await inventoryService.getMyInventories(
@@ -180,7 +183,7 @@ const userController = {
   }),
 
   withdraw: asyncHandler(async (req, res) => {
-    const userId = await extractUserId(req);
+    const userId = extractUserId(req);
 
     await destroySession(req);
     await db.sequelize.transaction(async (t) => {
@@ -194,6 +197,85 @@ const userController = {
     });
 
     return res.json(CreateSuccessResponse('탈퇴가 완료되었습니다.'));
+  }),
+
+  addShoppingLists: asyncHandler(async (req, res) => {
+    hasErrorsInValidation(req);
+
+    const userId = extractUserId(req);
+    const shoppingLists = req.body.shoppingLists;
+    const materialIds = shoppingLists.map((shoppingList) => {
+      shoppingList.userId = userId;
+      return shoppingList.materialId;
+    });
+
+    const count = await materialService.countMaterialsByIds(materialIds);
+    if (materialIds.length !== count) {
+      throw new ErrorResponse(CreateErrorCode(ErrorCode.INVALID_REQUEST_PARAM));
+    }
+
+    await shoppingListService.addShoppingLists(shoppingLists);
+
+    return res.json(
+      CreateSuccessResponse('사야 할 식재료를 쇼핑목록에 추가하였습니다.'),
+    );
+  }),
+  deleteShoppingList: asyncHandler(async (req, res) => {
+    hasErrorsInValidation(req);
+    const shoppingListId = req.params.id;
+
+    await shoppingListService.deleteShoppingList(shoppingListId);
+
+    return res.json(
+      CreateSuccessResponse('사야 할 식재료 목록을 삭제하였습니다.'),
+    );
+  }),
+
+  addInventories: asyncHandler(async (req, res) => {
+    hasErrorsInValidation(req);
+    const userId = extractUserId(req);
+    const inventories = req.body.inventories;
+
+    const materialIds = inventories.map((inventory) => {
+      inventory.userId = userId;
+      return inventories.materialId;
+    });
+
+    const count = await materialService.countMaterialsByIds(materialIds);
+    if (materialIds.length !== count) {
+      throw new ErrorResponse(CreateErrorCode(ErrorCode.INVALID_REQUEST_PARAM));
+    }
+
+    await inventoryService.addInventories(inventories);
+
+    return res.json(
+      CreateSuccessResponse('인벤토리에 식재료를 추가하였습니다.'),
+    );
+  }),
+
+  deleteInventory: asyncHandler(async (req, res) => {
+    hasErrorsInValidation(req);
+    const inventoryId = req.params.id;
+
+    await inventoryService.deleteInventory(inventoryId);
+
+    return res.json(
+      CreateSuccessResponse('보유하고 있는 식재료를 삭제하였습니다.'),
+    );
+  }),
+
+  createSurvey: asyncHandler(async (req, res) => {
+    hasErrorsInValidation(req);
+    const userId = extractUserId(req);
+    const surveys = req.body.surveys;
+    const surveysWithUserId = surveys.map((survey) => ({
+      ...survey,
+      userId,
+    }));
+
+    await surveyService.createSurvey(surveysWithUserId);
+
+    return res.json(CreateSuccessResponse('설문조사 완료'));
   }),
 };
 

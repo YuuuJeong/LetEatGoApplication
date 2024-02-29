@@ -3,7 +3,6 @@ const { logger } = require('../config/winston');
 
 const globalErrorHandler = (err, req, res, next) => {
   const error = { ...err };
-  // If errorResponse with baseResponse
   const data = {
     code: error.code || ErrorCode.INTERNAL_SERVER_ERROR.code,
     message: err.message,

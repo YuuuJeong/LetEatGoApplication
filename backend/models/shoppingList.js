@@ -23,6 +23,12 @@ module.exports = class ShoppingList extends Sequelize.Model {
         },
       },
       {
+        indexes: [
+          {
+            name: 'inventory_user_id_index',
+            fields: ['user_id'],
+          },
+        ],
         sequelize,
         timestamps: true,
         underscored: true,

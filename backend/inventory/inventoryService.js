@@ -9,26 +9,7 @@ const inventoryService = {
       deletedAt: null,
     };
 
-    const [nodes, count] = await Promise.all([
-      Inventory.findAll({
-        where,
-        include: {
-          model: Material,
-          include: {
-            model: MaterialCategory,
-          },
-        },
-        offset,
-        limit: +size,
-      }),
-      Inventory.count({
-        where: {
-          userId,
-          deletedAt: null,
-        },
-      }),
-    ]);
-    Inventory.findAll({
+    const { rows, count } = await Inventory.findAndCountAll({
       where,
       include: {
         model: Material,
@@ -41,9 +22,20 @@ const inventoryService = {
     });
 
     return {
-      nodes,
+      nodes: rows,
       count,
     };
+  },
+
+  addInventories(inventories) {
+    return Inventory.bulkCreate(inventories);
+  },
+  deleteInventory(id) {
+    return Inventory.destroy({
+      where: {
+        id,
+      },
+    });
   },
 };
 
