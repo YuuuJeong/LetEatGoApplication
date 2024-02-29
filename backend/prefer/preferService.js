@@ -23,8 +23,27 @@ const preferService = {
 
     return prefers.map((prefer) => prefer.food);
   },
-  async upsertUserPreferredFood(preferData) {
-    return Prefer.upsert(preferData);
+  upsertUserPreferredFood(preferData) {
+    return Prefer.upsert(preferData, {
+      where: {
+        userId: preferData.userId,
+        foodId: preferData.foodId,
+      },
+    });
+  },
+  incrementView(userId, foodId) {
+    return Prefer.increment(
+      { view: 1 },
+      {
+        where: {
+          userId,
+          foodId,
+        },
+      },
+    );
+  },
+  createPrefer(data) {
+    return Prefer.create(data);
   },
 };
 

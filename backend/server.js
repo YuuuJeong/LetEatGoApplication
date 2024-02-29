@@ -11,6 +11,8 @@ const RedisStore = require('connect-redis').default;
 const userRouter = require('./user/userRoute');
 const preferRouter = require('./prefer/preferRoute');
 const foodRouter = require('./food/foodRoute');
+const recipeRouter = require('./recipe/recipeRoute');
+
 const globalErrorHandler = require('./middlewares/globalErrorHandler');
 const { redisClientSingleton } = require('./common/utils/redisClient');
 
@@ -77,6 +79,7 @@ const apiRouter = express.Router();
 apiRouter.use('/users', userRouter);
 apiRouter.use('/prefers', preferRouter);
 apiRouter.use('', foodRouter);
+apiRouter.use('recipes', recipeRouter);
 app.use('/api', apiRouter);
 app.use(globalErrorHandler);
 

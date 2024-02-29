@@ -1,46 +1,40 @@
 const Sequelize = require('sequelize');
-module.exports = class Top5 extends Sequelize.Model {
+
+module.exports = class RecipeStep extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-        id: {
+        order: {
           type: Sequelize.INTEGER,
           allowNull: false,
           autoIncrement: true,
           primaryKey: true,
         },
-        foodId: {
+        recipeId: {
           type: Sequelize.INTEGER,
           allowNull: false,
+          primaryKey: true,
         },
-        rank: {
-          type: Sequelize.INTEGER,
+        description: {
+          type: Sequelize.TEXT,
           allowNull: false,
         },
       },
       {
-        indexes: [
-          {
-            name: 'top5_food_id_index',
-            fields: ['food_id'],
-          },
-        ],
         sequelize,
-        timestamps: true,
+        timestamps: false,
         underscored: true,
-        paranoid: true,
-        modelName: 'top5',
-        tableName: 'Top5',
+        paranoid: false,
+        modelName: 'recipeStep',
+        tableName: 'RecipeStep',
         charset: 'utf8',
         collate: 'utf8_general_ci',
       },
     );
   }
-
   static associate(models) {
-    this.belongsTo(models.Food, {
-      foreignKey: 'foodId',
-      targetKey: 'id',
+    this.belongsTo(models.Recipe, {
+      foreignKey: 'recipeId',
     });
   }
 };

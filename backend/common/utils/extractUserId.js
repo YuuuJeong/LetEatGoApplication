@@ -1,5 +1,5 @@
 async function extractUserId(req) {
-  return user.id;
+  return req.session.user.id;
 }
 
 module.exports = extractUserId;

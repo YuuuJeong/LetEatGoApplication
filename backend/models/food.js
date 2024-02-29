@@ -44,5 +44,6 @@ module.exports = class Food extends Sequelize.Model {
       through: FoodCategoryMapping,
     });
     this.hasMany(models.Top5, { foreignKey: 'foodId', sourceKey: 'id' });
+    this.hasMany(models.Recipe, { foreignKey: 'foodId', sourceKey: 'id' });
   }
 };

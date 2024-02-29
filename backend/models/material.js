@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const RecipeMaterialMapping = require('./recipeMaterialMapping');
 module.exports = class Material extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
@@ -35,6 +36,10 @@ module.exports = class Material extends Sequelize.Model {
     this.belongsTo(models.MaterialCategory, {
       foreignKey: 'categoryId',
       targetKey: 'id',
+    });
+    this.belongsToMany(models.Recipe, {
+      through: RecipeMaterialMapping,
+      foreignKey: 'id',
     });
   }
 };

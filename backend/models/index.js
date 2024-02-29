@@ -10,6 +10,8 @@ const MaterialCategory = require('./materialCategory');
 const FoodCategory = require('./foodCategory');
 const FoodCategoryMapping = require('./foodCategoryMapping');
 const Top5 = require('./top5');
+const RecipeMaterialMapping = require('./recipeMaterialMapping');
+const RecipeStep = require('./recipeStep');
 
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config')[env];
@@ -38,6 +40,8 @@ db.ShoppingList = ShoppingList;
 db.MaterialCategory = MaterialCategory;
 db.FoodCategoryMapping = FoodCategoryMapping;
 db.Top5 = Top5;
+db.RecipeMaterialMapping = RecipeMaterialMapping;
+db.RecipeStep = RecipeStep;
 
 User.init(sequelize);
 Prefer.init(sequelize);
@@ -50,6 +54,9 @@ MaterialCategory.init(sequelize);
 FoodCategory.init(sequelize);
 FoodCategoryMapping.init(sequelize);
 Top5.init(sequelize);
+RecipeMaterialMapping.init(sequelize);
+RecipeStep.init(sequelize);
+
 Object.values(db).forEach((model) => {
   if (model.associate) {
     model.associate(db);

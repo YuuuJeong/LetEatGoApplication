@@ -1,5 +1,6 @@
 const { INTEGER, STRING } = require('sequelize');
 const Sequelize = require('sequelize');
+const RecipeMaterialMapping = require('./recipeMaterialMapping');
 
 module.exports = class Recipe extends Sequelize.Model {
   static init(sequelize) {
@@ -11,20 +12,26 @@ module.exports = class Recipe extends Sequelize.Model {
           autoIncrement: true,
           primaryKey: true,
         },
-        material: {
-          type: Sequelize.TEXT,
+        title: {
+          type: Sequelize.STRING,
           allowNull: false,
         },
-        order: {
-          type: Sequelize.JSON,
+        foodId: {
+          type: Sequelize.INTEGER,
           allowNull: false,
         },
       },
       {
+        indexes: [
+          {
+            name: 'recipe_title_index',
+            fields: ['title'],
+          },
+        ],
         sequelize,
         timestamps: true,
         underscored: true,
-        paranoid: false,
+        paranoid: true,
         modelName: 'recipe',
         tableName: 'Recipe',
         charset: 'utf8',
@@ -33,10 +40,16 @@ module.exports = class Recipe extends Sequelize.Model {
     );
   }
 
-  static associate(db) {
-    db.Recipe.belongsTo(db.Food, {
-      foreignKey: 'foodid',
-      sourceKey: 'foodid',
+  static associate(models) {
+    this.belongsToMany(models.Material, {
+      through: RecipeMaterialMapping,
+      foreignKey: 'recipeId',
+    });
+    this.hasMany(models.Recipe, {
+      foreignKey: 'recipeId',
+    });
+    this.belongsTo(models.Food, {
+      foreignKey: 'foodId',
     });
   }
 };

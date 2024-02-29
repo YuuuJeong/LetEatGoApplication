@@ -2,11 +2,18 @@ const Food = require('../models/food');
 const { Op, Sequelize } = require('sequelize');
 
 const foodService = {
+  getFoodById(foodId) {
+    return Food.findByPk({
+      where: {
+        foodId,
+      },
+    });
+  },
   getFoodByIds(foodIds) {
     return Food.findAll({
       attributes: ['name', 'image', 'foodId'],
       where: {
-        foodid: { [Op.in]: foodIds },
+        foodId: { [Op.in]: foodIds },
       },
     });
   },

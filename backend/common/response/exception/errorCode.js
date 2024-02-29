@@ -45,6 +45,14 @@ const ErrorCode = {
     code: HttpStatusCode.BadRequest,
     message: '단시간내에 동일한 요청을 보낼 수 없습니다.',
   },
+  FOOD_NOT_FOUND: {
+    code: HttpStatusCode.NotFound,
+    message: '찾을 수 없는 음식입니다.',
+  },
+  RECIPE_NOT_FOUND: {
+    code: HttpStatusCode.NotFound,
+    message: '찾을 수 없는 레시피입니다.',
+  },
 };
 
 function CreateErrorCode({ code, message }, errors) {
